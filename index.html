@@ -12,7 +12,7 @@
 <body>
 
     <div class="app-header">
-        <h1>京都賞楓計畫</h1>
+        <h1>京都賞楓七日計畫</h1>
         <p id="app-status" style="font-size: 12px; color: #7B3F00; margin-top: 5px;">應用程式狀態...</p>
     </div>
 
@@ -174,6 +174,13 @@
         <div class="day-card" id="accounting-widget">
             <h4>每日支出記錄</h4>
             
+            <!-- 新增此 DIV 用於顯示 Firebase 錯誤訊息 -->
+            <div id="firebase-error-alert" class="error-alert" style="display: none;">
+                <strong>記帳功能連線失敗！</strong><br>
+                錯誤原因：無法取得 Firebase 配置資訊。請嘗試重新載入頁面。<br>
+                詳細錯誤: <span id="error-details"></span>
+            </div>
+            
             <!-- 新增支出表單 -->
             <form id="expense-form" class="expense-form">
                 <input type="date" id="expense-date" name="date" required>
@@ -223,6 +230,7 @@
 
 </body>
 </html>
+
 
 
 

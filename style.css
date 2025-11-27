@@ -266,7 +266,6 @@ button:active {
 .clear-btn {
     width: 100%;
     /* 清空按鈕使用柔和的土黃色 */
-    background-color: #B0C4DE; /* 藍灰色調 (靜謐感) -> 替換為: */
     background-color: #D2B48C; 
     margin-top: 15px;
 }
@@ -313,5 +312,37 @@ button:active {
     font-size: 13px;
     font-weight: bold;
 }
+
+/* ============================================================= */
+/* 6. 新增：即時天氣查詢介面樣式 */
+/* ============================================================= */
+#weather-display {
+    text-align: center;
+    padding: 15px;
+    border: 1px dashed #D2B48C; /* 暖棕色虛線邊框 */
+    border-radius: 4px;
+    margin-top: 10px;
+    background-color: #FFF8E1; /* 淺黃色背景 */
+}
+
+#weather-display h4 {
+    margin-top: 0;
+    font-size: 18px;
+    color: #6B4938; /* 棕色文字 */
+}
+
+/* 讓天氣圖標可以獨立顯示 */
+.weather-icon {
+    width: 80px; /* 增加圖標大小 */
+    height: 80px;
+    display: block;
+    margin: 0px auto 5px auto; /* 居中 */
+}
+
+/* 調整天氣按鈕與卡片內按鈕的間距 */
+#weather-display button {
+    margin-top: 15px;
+}
+
 
 

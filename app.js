@@ -7,8 +7,8 @@ import {
     getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
 import { 
-    getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, setDoc, 
-    serverTimestamp, getDocs, where
+    getFirestore, collection, addDoc, onSnapshot, query, deleteDoc, doc, 
+    serverTimestamp, getDocs
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 // 為了避免因排序造成索引錯誤，這裡我們將不在 Firestore 內使用 orderBy。
 
@@ -29,6 +29,29 @@ if (typeof __firebase_config !== 'undefined' && __firebase_config) {
     } catch (e) {
         console.error("無法解析 __firebase_config:", e);
         // 如果解析失敗，firebaseConfig 仍為 null，將觸發錯誤訊息
+    }
+}
+
+/**
+ * 顯示 Firebase 錯誤警告並隱藏記帳功能
+ * @param {string} message - 錯誤訊息
+ */
+function showFirebaseError(message) {
+    const errorAlert = document.getElementById('firebase-error-alert');
+    const errorDetails = document.getElementById('error-details');
+    
+    if (errorAlert) {
+        errorAlert.style.display = 'block';
+    }
+    if (errorDetails) {
+        errorDetails.textContent = message;
+    }
+    // 禁用表單等交互元素
+    document.getElementById('expense-form')?.querySelectorAll('input, select, button').forEach(el => el.disabled = true);
+    // 確保按鈕存在後再嘗試禁用
+    const clearBtn = document.getElementById('clear-expenses-btn');
+    if (clearBtn) {
+        clearBtn.disabled = true;
     }
 }
 
@@ -109,9 +132,11 @@ const writeString = (view, offset, string) => {
  */
 async function initializeFirebase() {
     if (!firebaseConfig) {
-        // 如果配置缺失，印出錯誤並更新狀態
-        console.error("Firebase 配置缺失。無法初始化 Firestore/Auth。");
+        // 如果配置缺失，印出錯誤並更新狀態和警報區塊
+        const errMsg = "應用程式啟動參數缺失：__firebase_config 為空或無效。";
+        console.error(`Firebase 配置缺失。錯誤: ${errMsg}`);
         document.getElementById('app-status').textContent = 'Firebase 設置失敗，記帳功能無法使用。';
+        showFirebaseError(errMsg);
         return;
     }
     
@@ -138,6 +163,13 @@ async function initializeFirebase() {
                 
                 // 認證成功後，加載記帳數據
                 loadExpenses();
+                // 成功連線後，隱藏錯誤提示 (如果之前顯示過)
+                document.getElementById('firebase-error-alert').style.display = 'none';
+                document.getElementById('expense-form')?.querySelectorAll('input, select, button').forEach(el => el.disabled = false);
+                const clearBtn = document.getElementById('clear-expenses-btn');
+                if (clearBtn) {
+                    clearBtn.disabled = false;
+                }
             } else {
                 userId = null;
                 console.log("用戶已登出或匿名認證失敗。");
@@ -147,7 +179,9 @@ async function initializeFirebase() {
 
     } catch (error) {
         console.error("Firebase 初始化或認證出錯:", error);
-        document.getElementById('app-status').textContent = `Firebase 設置失敗，記帳功能無法使用。錯誤: ${error.message}`;
+        const errMsg = `初始化失敗: ${error.message}`;
+        document.getElementById('app-status').textContent = `Firebase 設置失敗，記帳功能無法使用。`;
+        showFirebaseError(errMsg);
     }
 }
 
@@ -192,6 +226,8 @@ function handleConvert() {
     const statusText = document.getElementById('converter-status');
 
     const jpyAmount = parseFloat(jpyInput.value);
+    // 確保 EXCHANGE_RATE_JPY_TO_TWD 在這裡被正確引用
+    const rate = typeof EXCHANGE_RATE_JPY_TO_TWD !== 'undefined' ? EXCHANGE_RATE_JPY_TO_TWD : 0.22; 
 
     if (isNaN(jpyAmount) || jpyAmount <= 0) {
         resultDisplay.textContent = '0.00';
@@ -200,11 +236,11 @@ function handleConvert() {
     }
 
     // 進行換算
-    const twdAmount = jpyAmount * EXCHANGE_RATE_JPY_TO_TWD;
+    const twdAmount = jpyAmount * rate;
 
     // 顯示結果
     resultDisplay.textContent = twdAmount.toFixed(2);
-    statusText.textContent = `當前參考匯率 (JPY->TWD): ${EXCHANGE_RATE_JPY_TO_TWD}。`;
+    statusText.textContent = `當前參考匯率 (JPY->TWD): ${rate}。`;
 }
 
 // =================================================================
@@ -231,9 +267,10 @@ function getExpenseCollectionPath() {
 async function handleAddExpense(e) {
     e.preventDefault();
     
+    // 關鍵保護：檢查 db 和 userId 是否存在
     if (!db || !userId) {
         console.error("Firebase/Firestore 尚未初始化或未登入。");
-        alert('記帳功能尚未啟用，請檢查應用程式狀態。');
+        // 這裡不再使用 alert()，因為 showFirebaseError 應該已經處理了禁用 UI 的問題
         return;
     }
 
@@ -250,9 +287,13 @@ async function handleAddExpense(e) {
 
     if (!date || isNaN(amount) || amount <= 0 || !currency) {
         console.error("請填寫所有有效的欄位。");
-        alert('請填寫所有有效的欄位（日期、金額、幣別）。');
+        // 使用 window.alert 進行簡單提示，雖然推薦自訂 Modal
+        window.alert('請填寫所有有效的欄位（日期、金額、幣別）。');
         return;
     }
+    
+    // 確保 EXCHANGE_RATE_JPY_TO_TWD 在這裡被正確引用
+    const rate = typeof EXCHANGE_RATE_JPY_TO_TWD !== 'undefined' ? EXCHANGE_RATE_JPY_TO_TWD : 0.22; 
 
     const expenseData = {
         date,
@@ -260,7 +301,7 @@ async function handleAddExpense(e) {
         currency,
         description,
         // 儲存換算後的 TWD 金額
-        amountTWD: currency === 'JPY' ? amount * EXCHANGE_RATE_JPY_TO_TWD : amount,
+        amountTWD: currency === 'JPY' ? amount * rate : amount,
         timestamp: serverTimestamp() // 用於排序和記錄建立時間
     };
 
@@ -273,7 +314,7 @@ async function handleAddExpense(e) {
 
     } catch (error) {
         console.error("添加支出記錄失敗:", error);
-        alert(`添加支出失敗: ${error.message}`);
+        window.alert(`添加支出失敗: ${error.message}`);
     }
 }
 
@@ -394,7 +435,7 @@ async function handleDeleteExpense(e) {
     const docId = e.target.getAttribute('data-id');
     const path = getExpenseCollectionPath();
     
-    // 這裡我們使用自訂的 modal/提示，而不是瀏覽器內建的 confirm()
+    // 使用 window.confirm 進行二次確認
     const isConfirmed = window.confirm('確定要刪除這筆支出記錄嗎？'); 
 
     if (!isConfirmed || !docId || !path) return;
@@ -404,7 +445,7 @@ async function handleDeleteExpense(e) {
         console.log("支出記錄成功刪除:", docId);
     } catch (error) {
         console.error("刪除支出記錄失敗:", error);
-        alert(`刪除失敗: ${error.message}`);
+        window.alert(`刪除失敗: ${error.message}`);
     }
 }
 
@@ -413,8 +454,13 @@ async function handleDeleteExpense(e) {
  * 從 Firestore 實時加載並監聽支出數據
  */
 function loadExpenses() {
+    // 關鍵保護：檢查 db 是否存在
+    if (!db) {
+        console.error("Firestore 實例不可用，無法加載數據。");
+        return;
+    }
     const path = getExpenseCollectionPath();
-    if (!path || !db) return;
+    if (!path) return;
 
     // 創建查詢。注意：避免使用 orderBy() 除非您確定 Firestore 索引已建立。
     const q = query(collection(db, path)); 
@@ -432,7 +478,9 @@ function loadExpenses() {
         
     }, (error) => {
         console.error("實時加載支出數據失敗:", error);
+        const errMsg = `數據讀取失敗: ${error.message}`;
         document.getElementById('app-status').textContent = `記帳數據載入失敗: ${error.message}`;
+        showFirebaseError(errMsg);
     });
 }
 
@@ -488,12 +536,11 @@ window.onload = function() {
             // onSnapshot 會自動更新 UI
         } catch (error) {
             console.error("清空記帳數據失敗:", error);
-            alert(`清空數據失敗: ${error.message}`);
+            window.alert(`清空數據失敗: ${error.message}`);
         }
     });
 
 };
-
 
 
 

@@ -42,4 +42,77 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 // PWA 註冊的程式碼請保持不變 (在上面或下面皆可)
 // if ('serviceWorker' in navigator) { ... }
+// --- 記帳功能核心邏輯 (使用 Local Storage) ---
+
+let expenses = []; // 全域變數，儲存所有記帳紀錄
+
+// 1. 載入紀錄：從 Local Storage 讀取數據
+function loadExpenses() {
+    const savedExpenses = localStorage.getItem('kyotoExpenses');
+    if (savedExpenses) {
+        expenses = JSON.parse(savedExpenses);
+    }
+    renderTable();
+}
+
+// 2. 儲存紀錄：將數據寫入 Local Storage
+function saveExpenses() {
+    localStorage.setItem('kyotoExpenses', JSON.stringify(expenses));
+}
+
+// 3. 渲染表格：更新 HTML 顯示
+function renderTable() {
+    const listBody = document.getElementById('expense-list');
+    const totalElement = document.getElementById('total-expense');
+    listBody.innerHTML = '';
+    let total = 0;
+
+    expenses.forEach((expense, index) => {
+        const row = listBody.insertRow();
+        row.insertCell(0).textContent = expense.description;
+        row.insertCell(1).textContent = expense.category;
+        row.insertCell(2).textContent = expense.amount;
+        total += expense.amount;
+    });
+
+    totalElement.textContent = total.toLocaleString() + ' JPY';
+}
+
+// 4. 新增紀錄
+function addExpense() {
+    const amountInput = document.getElementById('amount');
+    const categoryInput = document.getElementById('category');
+    const descriptionInput = document.getElementById('description');
+
+    const amount = parseFloat(amountInput.value);
+    const category = categoryInput.value;
+    const description = descriptionInput.value || category; // 如果沒寫備註，就用類別代替
+
+    if (isNaN(amount) || amount <= 0) {
+        alert('請輸入有效的金額！');
+        return;
+    }
+
+    expenses.push({ amount, category, description });
+    saveExpenses();
+    renderTable();
+
+    // 清空表單
+    amountInput.value = '';
+    descriptionInput.value = '';
+}
+
+// 5. 清空紀錄
+function clearExpenses() {
+    if (confirm('確定要清除所有記帳紀錄嗎？此操作不可逆！')) {
+        expenses = [];
+        saveExpenses();
+        renderTable();
+    }
+}
+
+// 載入時執行：確保 PWA 載入時就讀取數據
+window.onload = loadExpenses;
+
+// --- 記帳功能邏輯結束 ---
 

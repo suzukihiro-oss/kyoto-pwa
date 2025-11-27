@@ -179,3 +179,51 @@ button:active {
     background-color: #C0C0C0;
     margin-top: 10px;
 }
+
+/* --- 每日總結報告樣式 --- */
+.daily-summary-report {
+    margin-top: 15px;
+}
+.day-summary-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05); /* 輕微陰影 */
+}
+.day-summary-card h3 {
+    font-size: 16px;
+    margin-top: 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.summary-table {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 13px;
+}
+.summary-table td {
+    padding: 5px 0;
+    border-bottom: none; 
+}
+.total-badge {
+    background-color: #A0522D; /* 柔和朱紅色標籤 */
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* 確保日期和金額輸入框不會太寬 */
+.expense-form input[type="date"] {
+    flex-basis: 45%; 
+    min-width: 120px;
+}
+.expense-form input[type="number"] {
+    flex-basis: 45%; 
+}

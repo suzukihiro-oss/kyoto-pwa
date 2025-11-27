@@ -33,17 +33,20 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // 預設載入時，將第一個 Tab 設為 active (防止 tab-content 樣式干擾)
+    // 預設載入時，將第一個 Tab 設為 active
     document.getElementById('daily').classList.add('active');
     
-    // 綁定匯率輸入事件，確保頁面載入後立即生效
+    // 綁定匯率輸入事件
     const jpyInput = document.getElementById('jpyAmount');
     if (jpyInput) {
         jpyInput.addEventListener('input', convertCurrency);
     }
     
-    // 【新增】載入時，預設設定記帳日期為今天
+    // 載入時，預設設定記帳日期為今天
     setTodayDate();
+    
+    // 載入時執行天氣查詢
+    getKyotoWeather();
 
     // 載入所有本地儲存數據
     loadExpenses();
@@ -114,7 +117,7 @@ function getTodayDateString() {
            String(today.getDate()).padStart(2, '0');
 }
 
-// 【新增】設定日期輸入框為今天日期
+// 設定日期輸入框為今天日期 (用於載入和新增後重設)
 function setTodayDate() {
     const dateInput = document.getElementById('expenseDate');
     if (dateInput) {
@@ -126,7 +129,6 @@ function setTodayDate() {
 function loadExpenses() {
     const savedExpenses = localStorage.getItem('kyotoExpenses');
     if (savedExpenses) {
-        // 確保舊格式的數據也能被載入
         try {
             expenses = JSON.parse(savedExpenses);
         } catch(e) {
@@ -190,7 +192,7 @@ function addExpense() {
     // 清空表單
     amountInput.value = '';
     descriptionInput.value = '';
-    // 【修改】新增完畢後，將日期重設為今天
+    // 新增完畢後，將日期重設為今天
     setTodayDate(); 
 }
 
@@ -267,6 +269,87 @@ function renderDailySummary() {
     });
     
     reportDiv.innerHTML = html;
+}
+
+
+// =============================================================
+// 5. 即時天氣查詢功能 (需要 API Key)
+// =============================================================
+
+// !!! 請替換為您從 OpenWeatherMap 網站註冊取得的 API Key !!!
+const API_KEY = '94c8b155fe3df25175478269ab2c5aad'; 
+
+// 京都市的經緯度 (確保位置準確)
+const KYOTO_LAT = 35.0116;
+const KYOTO_LON = 135.7681;
+const WEATHER_URL = `https://api.openweathermap.org/data/2.5/weather?lat=${KYOTO_LAT}&lon=${KYOTO_LON}&units=metric&lang=zh_tw&appid=${API_KEY}`;
+
+// 獲取並顯示天氣資訊
+function getKyotoWeather() {
+    const weatherDisplay = document.getElementById('weather-display');
+    // 如果沒有天氣顯示區塊，則退出
+    if (!weatherDisplay) return; 
+
+    weatherDisplay.innerHTML = '<p style="text-align: center;">正在查詢...</p>';
+
+    // 檢查 API Key 是否已設定 (防止錯誤呼叫)
+    if (API_KEY === 'YOUR_OPENWEATHERMAP_API_KEY' || !API_KEY) {
+        weatherDisplay.innerHTML = `
+            <p style="color: orange;">請在 app.js 中設定您的 OpenWeatherMap API Key！</p>
+            <button onclick="getKyotoWeather()">重試</button>
+        `;
+        return;
+    }
+
+    fetch(WEATHER_URL)
+        .then(response => {
+            if (!response.ok) {
+                // 如果是 401 錯誤，通常是 API Key 無效
+                if (response.status === 401) {
+                     throw new Error(`授權錯誤！請檢查您的 API Key 是否正確。`);
+                }
+                throw new Error(`HTTP error! 狀態碼: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // 檢查是否包含有效的數據
+            if (data && data.main && data.weather && data.weather.length > 0) {
+                const temp = Math.round(data.main.temp);
+                const feelsLike = Math.round(data.main.feels_like);
+                const description = data.weather[0].description;
+                const iconCode = data.weather[0].icon; 
+                const humidity = data.main.humidity;
+                const windSpeed = data.wind.speed; // m/s
+                
+                // 使用 OpenWeatherMap 提供的天氣圖標
+                const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
+
+                // 構建顯示的 HTML 內容
+                weatherDisplay.innerHTML = `
+                    <h4>${data.name} 即時天氣</h4>
+                    <img src="${iconUrl}" alt="${description}" class="weather-icon">
+                    <p>
+                        <strong>溫度：</strong> ${temp}°C <br>
+                        <strong>體感：</strong> ${feelsLike}°C <br>
+                        <strong>狀況：</strong> ${description}
+                    </p>
+                    <p style="font-size: 14px; margin-top: 10px;">
+                        濕度：${humidity}% | 風速：${windSpeed} m/s
+                    </p>
+                    <button onclick="getKyotoWeather()">刷新天氣</button>
+                `;
+            } else {
+                throw new Error("Invalid weather data structure.");
+            }
+        })
+        .catch(error => {
+            console.error("Fetch weather error:", error);
+            weatherDisplay.innerHTML = `
+                <p style="color: red;">載入失敗！${error.message}</p>
+                <button onclick="getKyotoWeather()">重試</button>
+            `;
+        });
 }
 
 

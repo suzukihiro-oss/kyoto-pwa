@@ -1,34 +1,33 @@
 /* ============================================================= */
-/* 1. 基礎風格與日式秋日暖意美學 */
+/* 1. 基礎風格與日式極簡美學 */
 /* ============================================================= */
 body {
     /* 核心字體：日文優先，確保中文字體也能優雅顯示 */
     font-family: 'Hiragino Sans', 'Noto Sans TC', 'Roboto', sans-serif;
-    background-color: #FDF5E6; /* 溫暖的米白色/香草色 (模擬秋日陽光) */
+    background-color: #F8F8F4; /* 柔和的米白色 (和紙感) */
     margin: 0 auto;
-    max-width: 650px; 
+    max-width: 650px; /* 限制 App 寬度，適合手機閱讀 */
     padding: 10px; 
-    color: #3A3A3A; /* 柔和的深灰色文字 */
-    line-height: 1.8; 
+    color: #2F3640; /* 柔和的深灰色文字 */
+    line-height: 1.8; /* 增加行距，提高閱讀舒適度 */
     font-size: 15px;
 }
 
 .app-header {
     text-align: center;
     padding: 15px 0;
-    border-bottom: 1px solid #E0D5C9; /* 淺暖色分隔線 */
+    border-bottom: 1px solid #EAEAEA;
     margin-bottom: 10px;
 }
 
 .app-header h1 {
     font-size: 24px;
-    font-weight: 600;
+    font-weight: 500;
     margin: 0;
-    color: #7B3F00; /* 深栗棕色 */
 }
 
 /* ============================================================= */
-/* 2. 分頁切換 Tab Bar 樣式 (針對兩個 Tab) */
+/* 2. 分頁切換 Tab Bar 樣式 */
 /* ============================================================= */
 .tab-bar {
     display: flex;
@@ -39,23 +38,20 @@ body {
 }
 
 .tab-button {
-    background-color: #E6E0D4; /* 淺灰暖色背景 */
+    background-color: #E0E0E0;
     color: #4A4A4A;
-    padding: 10px 20px;
+    padding: 8px 15px;
     border: none;
     border-radius: 20px;
-    font-size: 15px;
+    font-size: 14px;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
-    flex-grow: 1; /* 讓兩個按鈕平均分配寬度 */
-    max-width: 50%;
 }
 
 .tab-button.active {
-    background-color: #A0522D; /* 主題色：栗棕色/赤土色 */
+    background-color: #4A4A4A; /* 深灰背景 */
     color: white;
     font-weight: bold;
-    box-shadow: 0 2px 4px rgba(160, 82, 45, 0.4);
 }
 
 .tab-content {
@@ -72,43 +68,32 @@ body {
 .day-card {
     margin: 25px 0;
     padding: 20px 20px 10px 20px;
-    border: 1px solid #E0D5C9; /* 溫暖的邊框 */
-    border-radius: 8px;
-    background-color: #FFFFFF; 
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* 柔和陰影 */
+    border: none; 
+    border-radius: 6px;
+    background-color: #FFFFFF; /* 純白色卡片背景 */
+    /* 增加非常輕微的陰影，模擬浮起感 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
 }
 
 .day-card h2 {
-    color: #7B3F00; /* 深栗棕色標題 */
+    color: #4A4A4A;
     font-size: 20px;
-    border-bottom: 1px dashed #CD5C5C; /* 楓紅虛線分隔 */
+    border-bottom: 1px dashed #E0E0E0; /* 標題底部使用虛線分隔 */
     padding-bottom: 10px;
     margin-top: 5px;
 }
-/* 天氣小工具 */
-.weather-widget {
-    background-color: #F8F0E7;
-    color: #A0522D;
-    font-weight: 600;
-    font-size: 13px;
-    padding: 5px 10px;
-    border-radius: 4px;
-    margin-bottom: 15px;
-    display: inline-block;
-}
 
-/* 內層資訊卡片 */
 .card {
     margin-top: 15px;
     padding: 15px;
-    border-left: 5px solid #CD5C5C; /* 楓葉紅側邊條 */
-    background-color: #FFFDF8;
-    border-radius: 6px;
+    border-left: 4px solid #B0C4DE; /* 藍灰色調 (靜謐感) */
+    background-color: #FDFDFD;
+    border-radius: 4px;
 }
 
 .card h4 {
     font-size: 16px;
-    color: #7B3F00;
+    color: #555;
     margin-top: 0;
     margin-bottom: 8px;
     font-weight: bold;
@@ -121,13 +106,13 @@ body {
     object-fit: cover; 
     border-radius: 6px; 
     display: block; 
-    /* 讓圖片稍微超出 padding，達到視覺寬度最大化 */
+    /* 調整邊距，讓圖片在 day-card 內實現滿版視覺效果 */
     margin: -10px 0 15px -10px; 
     width: calc(100% + 20px); 
 }
 
 button {
-    background-color: #A0522D; /* 主題色：栗棕色 */
+    background-color: #4A4A4A; 
     color: white;
     padding: 10px 18px;
     border: none;
@@ -139,32 +124,30 @@ button {
 }
 
 button:active {
-    background-color: #7B3F00; /* 按下時更深 */
+    background-color: #666; 
 }
 
 /* 亮顯與標籤顏色 */
 .highlight {
     font-weight: 600; 
-    color: #4A4A4A;
+    color: #333;
 }
 .must-eat {
-    color: #CD5C5C; /* 楓紅色 (Indian Red) */
+    color: #A0522D; /* 柔和的朱紅色/棕色 (Shu-iro) */
 }
 .must-buy {
-    color: #7B3F00; /* 深栗棕色 */
+    color: #3A5FCD; /* 柔和的藏青色 */
 }
 .important-notice {
-    color: #8B0000; 
-    border-left: 3px solid #CD5C5C; 
+    color: #8B0000; /* 深紅色警告 */
+    border-left: 3px solid #F0A0A0; 
     padding-left: 5px;
     display: block;
 }
 
 /* ============================================================= */
-/* 4. 匯率換算器樣式 (在 info-card 內) */
+/* 4. 匯率換算器樣式 */
 /* ============================================================= */
-#converter-widget h4 { border-bottom: 1px dashed #E0D5C9; padding-bottom: 8px; }
-
 .converter-input {
     margin: 15px 0;
 }
@@ -175,25 +158,24 @@ button:active {
     font-weight: 600;
 }
 .converter-input input {
-    width: 100%;
+    width: calc(100% - 22px); /* 100% 寬度減去 padding */
     padding: 10px;
-    border: 1px solid #E0D5C9;
+    border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
     text-align: right;
-    box-sizing: border-box;
+    box-sizing: border-box; /* 確保 padding 不會增加寬度 */
 }
 .converter-input button {
     width: 100%;
-    margin-top: 10px;
 }
 .converter-output {
     text-align: center;
     margin-top: 20px;
     padding: 10px;
-    border: 1px solid #CD5C5C;
+    border: 1px solid #B0C4DE;
     border-radius: 6px;
-    background-color: #FFFDF8;
+    background-color: #FDFDFD;
 }
 .result-display {
     font-size: 24px;
@@ -203,16 +185,14 @@ button:active {
 .separator {
     border: 0;
     height: 1px;
-    background-color: #E0D5C9;
+    background-color: #eee;
     margin: 15px 0;
 }
 
 
 /* ============================================================= */
-/* 5. 記帳表格樣式 (在 info-card 內) */
+/* 5. 記帳表格樣式 */
 /* ============================================================= */
-#accounting-widget h4 { border-bottom: 1px dashed #E0D5C9; padding-bottom: 8px; }
-
 .expense-form {
     display: flex;
     flex-wrap: wrap;
@@ -221,24 +201,29 @@ button:active {
 }
 .expense-form input, .expense-form select, .expense-form button {
     padding: 8px;
-    border: 1px solid #E0D5C9;
+    border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
+    flex: 1 1 100%; /* 預設佔滿一行 */
     box-sizing: border-box;
 }
-/* 調整表單元素寬度以確保響應性 */
-.expense-form input[type="date"], 
-.expense-form input[type="number"],
-.expense-form input[type="text"],
-.expense-form select { 
-    flex-basis: calc(50% - 5px); 
-    min-width: 45%; 
+
+/* 優化輸入欄位佈局 */
+.expense-form input[type="date"] {
+    flex-basis: 45%; 
+    min-width: 120px;
+}
+.expense-form input[type="number"] {
+    flex-basis: 45%; 
+}
+.expense-form select {
+    flex-basis: 45%;
 }
 .expense-form input[type="text"] {
-    flex-basis: 100%;
+    flex-basis: 45%;
 }
 .expense-form button {
-    background-color: #CD5C5C; /* 楓紅色按鈕 */
+    background-color: #5A5A5A;
     color: white;
     flex-basis: 100%;
 }
@@ -253,16 +238,15 @@ button:active {
 .expense-table th, .expense-table td {
     padding: 8px;
     text-align: left;
-    border-bottom: 1px solid #E0D5C9;
+    border-bottom: 1px solid #eee;
 }
 .expense-table th {
-    background-color: #F8F0E7;
+    background-color: #f5f5f5;
     font-weight: bold;
-    color: #4A4A4A;
 }
 .expense-table tfoot td {
     font-weight: bold;
-    border-top: 2px solid #CD5C5C;
+    border-top: 2px solid #ccc;
 }
 .clear-btn {
     width: 100%;
@@ -275,7 +259,7 @@ button:active {
     margin-top: 15px;
 }
 .day-summary-card {
-    border: 1px solid #E0D5C9;
+    border: 1px solid #ddd;
     border-radius: 6px;
     padding: 15px;
     margin-bottom: 15px;
@@ -286,7 +270,7 @@ button:active {
     font-size: 16px;
     margin-top: 0;
     padding-bottom: 8px;
-    border-bottom: 1px solid #E0D5C9;
+    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -301,13 +285,10 @@ button:active {
     border-bottom: none; 
 }
 .total-badge {
-    background-color: #A0522D; /* 栗棕色 */
+    background-color: #A0522D; 
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 13px;
     font-weight: bold;
 }
-
-
-

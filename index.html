@@ -12,6 +12,64 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="leaf-container"></div> <header class="app-header">
+        <h1>🍁 2025 京都秋遊 </h1>
+    ```
+
+### 🛠️ 步驟二：修改 `style.css` (定義楓葉樣式與動畫)
+
+請在您的 **`style.css`** 檔案底部，加入以下新的 CSS 程式碼。這段程式碼定義了楓葉如何落下和飄動：
+
+#### `style.css` (新增部分)
+
+```css
+/* ============================================================= */
+/* 6. 楓葉特效樣式 */
+/* ============================================================= */
+#leaf-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 讓特效不阻擋點擊網頁 */
+    z-index: 9999; /* 確保特效在最上層 */
+    overflow: hidden; /* 防止特效造成滾動條 */
+}
+
+.leaf {
+    position: absolute;
+    /* 簡化葉子形狀，用圓形模擬 */
+    border-radius: 50%; 
+    opacity: 0.8;
+    
+    /* 結合兩個動畫：落下 (fall) 和 飄動 (sway) */
+    animation: fall linear infinite, sway ease-in-out infinite;
+    transform: rotate(0deg);
+}
+
+/* 楓葉落下動畫 (從頂部到底部) */
+@keyframes fall {
+    0% {
+        top: -10%;
+    }
+    100% {
+        top: 110%;
+    }
+}
+
+/* 楓葉飄動動畫 (左右晃動並旋轉) */
+@keyframes sway {
+    0% {
+        transform: translateX(0) rotate(0deg);
+    }
+    50% {
+        transform: translateX(50px) rotate(180deg);
+    }
+    100% {
+        transform: translateX(0) rotate(360deg);
+    }
+}
 
     <header class="app-header">
         <h1>🍁 2025 京都秋遊 </h1>
@@ -251,6 +309,7 @@
     <script src="app.js"></script>
 </body>
 </html>
+
 
 
 

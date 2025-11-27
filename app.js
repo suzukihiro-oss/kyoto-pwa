@@ -1,21 +1,16 @@
-// 註冊 Service Worker 實現 PWA 離線功能
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js')
-      .then(reg => console.log('Service Worker: 註冊成功'))
-      .catch(err => console.error('Service Worker: 註冊失敗', err));
-  });
-}
+// =============================================================
+// 1. 核心功能: 地圖導航
+// =============================================================
 
-// --- 請將此段代碼貼入 app.js 中 ---
-
-// 導航按鈕功能：點擊後導航到 Google 地圖
 function navigateTo(location) {
-  // 構造 Google Maps 搜索 URL，使用 https:// 確保安全連線
-  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
-  window.open(mapUrl, '_blank');
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+    window.open(url, '_blank');
 }
-// --- Tab Bar 分頁切換功能 ---
+
+
+// =============================================================
+// 2. Tab Bar 分頁切換功能
+// =============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
     const tabButtons = document.querySelectorAll('.tab-button');
@@ -37,82 +32,228 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // 預設載入時，將第一個 Tab 設為 active
+    // 預設載入時，將第一個 Tab 設為 active (防止 tab-content 樣式干擾)
     document.getElementById('daily').classList.add('active');
+    
+    // 綁定匯率輸入事件，確保頁面載入後立即生效
+    const jpyInput = document.getElementById('jpyAmount');
+    if (jpyInput) {
+        jpyInput.addEventListener('input', convertCurrency);
+    }
+
+    // 載入所有本地儲存數據
+    loadExpenses();
+    loadRate();
 });
-// PWA 註冊的程式碼請保持不變 (在上面或下面皆可)
-// if ('serviceWorker' in navigator) { ... }
-// --- 記帳功能核心邏輯 (使用 Local Storage) ---
 
-let expenses = []; // 全域變數，儲存所有記帳紀錄
 
-// 1. 載入紀錄：從 Local Storage 讀取數據
+// =============================================================
+// 3. 匯率換算器功能 (使用 Local Storage)
+// =============================================================
+
+const DEFAULT_RATE = 0.22; 
+
+// 載入並顯示已儲存的匯率
+function loadRate() {
+    const savedRate = localStorage.getItem('exchangeRate');
+    const rateInput = document.getElementById('exchangeRate');
+    if (rateInput) {
+        rateInput.value = savedRate || DEFAULT_RATE;
+    }
+}
+
+// 儲存匯率到 Local Storage
+function saveRate() {
+    const rateInput = document.getElementById('exchangeRate');
+    const rate = parseFloat(rateInput.value);
+    
+    if (isNaN(rate) || rate <= 0) {
+        alert('請輸入有效的匯率！');
+        rateInput.value = DEFAULT_RATE;
+        return;
+    }
+    
+    localStorage.setItem('exchangeRate', rate);
+    convertCurrency(); // 儲存後立即重新計算
+    alert(`匯率已更新並儲存：1 JPY = ${rate} TWD`);
+}
+
+// 執行換算
+function convertCurrency() {
+    const jpyAmountInput = document.getElementById('jpyAmount');
+    const twdResultElement = document.getElementById('twdResult');
+    const rate = parseFloat(localStorage.getItem('exchangeRate')) || DEFAULT_RATE;
+    
+    // 如果輸入框不存在或內容為空，則設為 0
+    const jpy = parseFloat(jpyAmountInput ? jpyAmountInput.value : 0) || 0;
+    
+    const twd = jpy * rate;
+    
+    if (twdResultElement) {
+        // 使用 toLocaleString() 增加千位分隔符，並保留兩位小數
+        twdResultElement.textContent = twd.toLocaleString('en-US', { maximumFractionDigits: 2 });
+    }
+}
+
+
+// =============================================================
+// 4. 記帳功能核心邏輯 (使用 Local Storage 與日期彙總)
+// =============================================================
+
+let expenses = []; 
+
+// 取得今天的日期 (YYYY-MM-DD)
+function getTodayDateString() {
+    const today = new Date();
+    return today.getFullYear() + '-' + 
+           String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+           String(today.getDate()).padStart(2, '0');
+}
+
+// 載入紀錄：從 Local Storage 讀取數據
 function loadExpenses() {
     const savedExpenses = localStorage.getItem('kyotoExpenses');
     if (savedExpenses) {
-        expenses = JSON.parse(savedExpenses);
+        // 確保舊格式的數據也能被載入
+        try {
+            expenses = JSON.parse(savedExpenses);
+        } catch(e) {
+            console.error("Error parsing expenses from localStorage", e);
+            expenses = [];
+        }
     }
     renderTable();
+    renderDailySummary(); 
 }
 
-// 2. 儲存紀錄：將數據寫入 Local Storage
+// 儲存紀錄：將數據寫入 Local Storage
 function saveExpenses() {
     localStorage.setItem('kyotoExpenses', JSON.stringify(expenses));
 }
 
-// 3. 渲染表格：更新 HTML 顯示
+// 渲染明細表格：更新 HTML 顯示
 function renderTable() {
     const listBody = document.getElementById('expense-list');
     const totalElement = document.getElementById('total-expense');
     listBody.innerHTML = '';
     let total = 0;
 
-    expenses.forEach((expense, index) => {
+    // 將紀錄依日期降冪排序 (新紀錄在前)
+    const sortedExpenses = [...expenses].sort((a, b) => b.date.localeCompare(a.date));
+
+    sortedExpenses.forEach((expense) => {
         const row = listBody.insertRow();
-        row.insertCell(0).textContent = expense.description;
-        row.insertCell(1).textContent = expense.category;
-        row.insertCell(2).textContent = expense.amount;
+        row.insertCell(0).textContent = expense.date; 
+        row.insertCell(1).textContent = expense.description;
+        row.insertCell(2).textContent = expense.category;
+        row.insertCell(3).textContent = expense.amount.toLocaleString();
         total += expense.amount;
     });
 
     totalElement.textContent = total.toLocaleString() + ' JPY';
 }
 
-// 4. 新增紀錄
+// 新增紀錄
 function addExpense() {
+    const dateInput = document.getElementById('expenseDate');
     const amountInput = document.getElementById('amount');
     const categoryInput = document.getElementById('category');
     const descriptionInput = document.getElementById('description');
 
+    const date = dateInput.value || getTodayDateString(); 
     const amount = parseFloat(amountInput.value);
     const category = categoryInput.value;
-    const description = descriptionInput.value || category; // 如果沒寫備註，就用類別代替
+    const description = descriptionInput.value || category; 
 
     if (isNaN(amount) || amount <= 0) {
         alert('請輸入有效的金額！');
         return;
     }
 
-    expenses.push({ amount, category, description });
+    expenses.push({ date, amount, category, description });
     saveExpenses();
     renderTable();
+    renderDailySummary(); 
 
     // 清空表單
     amountInput.value = '';
     descriptionInput.value = '';
+    dateInput.value = ''; 
 }
 
-// 5. 清空紀錄
+// 清空紀錄
 function clearExpenses() {
     if (confirm('確定要清除所有記帳紀錄嗎？此操作不可逆！')) {
         expenses = [];
         saveExpenses();
         renderTable();
+        renderDailySummary(); 
     }
 }
 
-// 載入時執行：確保 PWA 載入時就讀取數據
-window.onload = loadExpenses;
+// 計算每日花費總結
+function calculateDailySummary() {
+    const summary = {};
+    
+    // 依日期和類別分組並加總
+    expenses.forEach(expense => {
+        const date = expense.date;
+        const category = expense.category;
+        
+        if (!summary[date]) {
+            summary[date] = { total: 0, categories: {} };
+        }
+        
+        if (!summary[date].categories[category]) {
+            summary[date].categories[category] = 0;
+        }
+        
+        summary[date].categories[category] += expense.amount;
+        summary[date].total += expense.amount;
+    });
+    
+    // 依日期降冪排序 (新紀錄在前)
+    const sortedDates = Object.keys(summary).sort().reverse();
+    
+    return { sortedDates, summary };
+}
 
-// --- 記帳功能邏輯結束 ---
+// 渲染每日花費總結表格
+function renderDailySummary() {
+    const reportDiv = document.getElementById('daily-summary-report');
+    if (!reportDiv) return; 
+
+    const { sortedDates, summary } = calculateDailySummary();
+    
+    if (sortedDates.length === 0) {
+        reportDiv.innerHTML = '<p style="text-align: center; color: #888;">尚無紀錄，請先新增花費。</p>';
+        return;
+    }
+    
+    let html = '';
+    
+    sortedDates.forEach(date => {
+        const daySummary = summary[date];
+        
+        html += `<div class="day-summary-card">`;
+        html += `<h3>${date} <span class="total-badge">${daySummary.total.toLocaleString()} JPY</span></h3>`;
+        html += `<table class="summary-table">`;
+        
+        const categories = Object.keys(daySummary.categories).sort();
+        
+        categories.forEach(category => {
+            const amount = daySummary.categories[category];
+            html += `<tr>`;
+            html += `<td style="width: 40%;">${category}</td>`;
+            html += `<td style="text-align: right;">${amount.toLocaleString()} JPY</td>`;
+            html += `</tr>`;
+        });
+        
+        html += `</table>`;
+        html += `</div>`;
+    });
+    
+    reportDiv.innerHTML = html;
+}
+
 

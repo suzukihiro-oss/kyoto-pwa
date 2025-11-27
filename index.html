@@ -48,11 +48,38 @@
         <p>日本報警/救護: 110 / 119</p>
     </div>
 
-    <div class="card info-card">
-        <h4>💰 記帳/預算表 (手動填寫)</h4>
-        <p>您可以在此手動紀錄或貼上您的預算連結。</p>
-        <p>交通預算: JPY 35,000 | 餐飲預算: JPY 45,000</p>
+  <div class="card info-card" id="accounting-widget">
+    <h4>💰 簡易記帳 (JPY)</h4>
+    
+    <div class="expense-form">
+        <input type="number" id="amount" placeholder="金額 (必填)" required>
+        <select id="category">
+            <option value="餐飲">餐飲 🍽️</option>
+            <option value="交通">交通 🚄</option>
+            <option value="住宿">住宿 🏠</option>
+            <option value="門票">門票 🎟️</option>
+            <option value="購物">購物 🛍️</option>
+            <option value="其他">其他...</option>
+        </select>
+        <input type="text" id="description" placeholder="備註 (如：拉麵)" required>
+        <button onclick="addExpense()">+ 新增</button>
     </div>
+
+    <table class="expense-table">
+        <thead>
+            <tr><th>項目</th><th>類別</th><th>金額 (JPY)</th></tr>
+        </thead>
+        <tbody id="expense-list">
+            </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">總計花費:</td>
+                <td id="total-expense">0 JPY</td>
+            </tr>
+        </tfoot>
+    </table>
+    <button class="clear-btn" onclick="clearExpenses()">🗑️ 清空紀錄</button>
+</div>
 </section>
         <div class="weather-widget">☀️ 預報: 晴朗, 13°C / 6°C</div>
         <h2>Day 1: 11/30 (日) 抵達與下鴨神社</h2>
@@ -183,5 +210,6 @@
 </body>
 
 </html>
+
 
 

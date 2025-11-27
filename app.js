@@ -3,6 +3,7 @@
 // =============================================================
 
 function navigateTo(location) {
+    // 修正：使用正確的模板字面值語法 ${...}，並替換為 Google Maps 搜尋的標準網址。
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
     window.open(url, '_blank');
 }

@@ -49,4 +49,43 @@ button {
     margin-top: 10px;
     font-size: 14px;
     cursor: pointer;
+
+}
+
+/* --- Tab Bar 樣式 (分頁) --- */
+.tab-bar {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 10px;
+    border-bottom: 2px solid #eee;
+}
+.tab-button {
+    flex-grow: 1;
+    background-color: transparent;
+    color: #888;
+    padding: 10px 0;
+    margin: 0 5px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-size: 16px;
+    font-weight: 500;
+}
+.tab-button.active {
+    color: #333; /* 激活狀態顏色 */
+    border-bottom: 2px solid #5a5a5a; /* 激活狀態底部線條 */
+    font-weight: bold;
+}
+.tab-content {
+    display: none; /* 預設隱藏所有內容區塊 */
+    padding-top: 15px;
+}
+.tab-content.active {
+    display: block; /* 只有激活的內容區塊才顯示 */
+}
+
+/* 行程內容微調 */
+.info-card h4 {
+    border-bottom: 1px dashed #ccc;
+    padding-bottom: 5px;
 }

@@ -292,3 +292,34 @@ button:active {
     font-size: 13px;
     font-weight: bold;
 }
+
+/* ============================================================= */
+/* 6. 記帳功能新增樣式 (刪除按鈕) */
+/* ============================================================= */
+
+/* 刪除按鈕樣式 */
+.delete-btn {
+    padding: 5px 8px;
+    font-size: 12px;
+    margin: 0;
+    /* 柔和的紅色，搭配日式簡約風格 */
+    background-color: #CC6666; 
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+    background-color: #A05252; /* 懸停時顏色加深 */
+}
+
+/* 調整表格樣式，讓金額欄位靠右對齊，保持整潔 */
+.expense-table td:nth-child(4) { /* 金額欄位 (第4欄) */
+    text-align: right; 
+}
+.expense-table td:nth-child(5) { /* 操作欄位 (第5欄) */
+    text-align: center; /* 按鈕置中或靠右都可以，這裡選置中 */
+}
+

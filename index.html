@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#F8F8F4">
-    <title>京都秋遊 PWA</title>
+    <meta name="theme-color" content="#A03E2F"> <title>京都秋遊 PWA</title>
     
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="apple-icon.png"> 
@@ -25,229 +24,140 @@
     <main id="daily" class="tab-content active">
 
         <section class="day-card">
-            <div class="weather-widget">☀️ 預報: 晴朗, 13°C / 6°C</div>
+            <div class="weather-widget" style="display: none;">☀️ 預報: 晴朗, 13°C / 6°C</div>
             <h2>Day 1: 11/30 (日) 抵達與下鴨神社</h2>
             <img src="images/day1_shimogamo.jpg" alt="下鴨神社的糺之森" class="day-image">
             
-            <div class="card transport-card">
-                <h4>🚄 交通：神戶機場 → 飯店</h4>
-                <p>路線：Port Liner → JR 三宮 (新快速) → 京都 (約 1.5 小時)</p>
-                <p>移動至：ホテルメルディア京都四条大宮 (四條大宮)</p>
+            <div class="card">
+                <h4>✈️ 抵達關西機場 (KIX)</h4>
+                <p>搭乘 Haruka 特急列車前往京都車站。</p>
+                <button onclick="navigateTo('京都車站')">查詢車次與時刻表</button>
+            </div>
+
+            <div class="card">
+                <h4>⛩️ 下鴨神社 (世界遺產)</h4>
+                <p>走訪<span class="highlight">糺之森</span>，感受深秋古樹的寧靜。</p>
+                <button onclick="navigateTo('下鴨神社')">Google Map 導航</button>
             </div>
             
-            <div class="card spot-card">
-                <h4>🏯 景點：下鴨神社 / 糺之森</h4>
-                <p class="highlight">導遊提示：世界遺產，糺之森是必走參道。</p>
-                <button onclick="navigateTo('下鴨神社')">🧭 導航按鈕</button>
-            </div>
-            
-            <div class="card dining-card">
-                <h4>🍽️ 晚餐：和牛燒肉 Wagyu Yakiniku Asuka</h4>
-                <p class="highlight must-eat">🔴 必吃美食：預約 18:30 Wagyu Yakiniku Asuka (近四條大宮)</p>
-                <button onclick="navigateTo('Wagyu Yakiniku Asuka')">🧭 導航按鈕</button>
+            <div class="card important-notice">
+                <h4>💡 提醒</h4>
+                <p>入住旅館後，盡快購買<span class="highlight">京都市巴士一日券</span>，方便後續幾天使用。</p>
             </div>
         </section>
 
         <section class="day-card">
-            <div class="weather-widget">🌤️ 預報: 多雲, 14°C / 7°C</div>
-            <h2>Day 2: 12/01 (一) 嵐山秋色 - 祐齋亭</h2>
+            <h2>Day 2: 12/01 (一) 嵐山一日遊</h2>
             <img src="images/day2_arashiyama.jpg" alt="嵐山竹林" class="day-image">
-            
-            <div class="card transport-card">
-                <h4>🚄 交通：前往嵐山</h4>
-                <p>路線：JR 嵯峨野線至「JR 嵯峨嵐山站」。</p>
+
+            <div class="card">
+                <h4>🚂 嵯峨野觀光小火車</h4>
+                <p>搭乘小火車欣賞保津峽谷的紅葉景色。需<span class="must-eat">提早預訂車票</span>！</p>
             </div>
 
-            <div class="card spot-card">
-                <h4>🎨 景點：嵐山祐齋亭與常寂光寺</h4>
-                <p class="highlight important-notice">✅ 已預約：嵐山祐齋亭 (Yuusai-tei) 參觀，體驗染色藝術與紅葉。</p>
-                <p>接著：竹林之道、野宮神社、天龍寺、常寂光寺。</p>
-                <p class="highlight">導遊攻略：常寂光寺是嵐山賞楓首選，天龍寺必看曹源池。</p>
-                <button onclick="navigateTo('嵐山祐齋亭')">🧭 導航按鈕</button>
+            <div class="card">
+                <h4>🎋 嵯峨野竹林之道</h4>
+                <p>感受壯觀的竹林氛圍。適合早晨前往，避開人潮。</p>
             </div>
             
-            <div class="card dining-card">
-                <h4>🍽️ 餐飲：嵐山美食</h4>
-                <p class="highlight must-eat">🔴 必吃美食：廣川鰻魚飯 (建議提前取號或預約)。</p>
-                <p class="highlight must-buy">🟢 伴手禮：老松 - 夏柑糖 (或和菓子)。</p>
+            <div class="card">
+                <h4>🍣 午餐推薦：豆腐料理</h4>
+                <p><span class="must-eat">湯豆腐</span>是嵐山特色。推薦順正湯豆腐。</p>
+                <button onclick="navigateTo('順正湯豆腐')">查詢順正位置</button>
             </div>
         </section>
 
         <section class="day-card">
-            <div class="weather-widget">🌦️ 預報: 陰轉晴, 10°C / 4°C</div>
-            <h2>Day 3: 12/02 (二) 飯店移動與和服 - 南禪寺/真如堂</h2>
-            <img src="images/day3_nanzenji.jpg" alt="南禪寺水路閣" class="day-image">
-            
-            <div class="card transport-card">
-                <h4>🧳 交通：飯店移動與和服動線</h4>
-                <p>上午：ホテルメルディア京都四条大宮 退房，計程車前往 Wander Kyoto Nanajo 寄放行李。</p>
-                <p>中午：地鐵烏丸線至四條站 (前往 Tekuteku 和服烏丸店)。</p>
+            <h2>Day 3: 12/02 (二) 古典名勝巡禮</h2>
+            <img src="images/day3_kinkaku.jpg" alt="金閣寺" class="day-image">
+
+            <div class="card">
+                <h4>✨ 金閣寺 (鹿苑寺)</h4>
+                <p>欣賞湖面倒影中的金光閃閃的寺廟。</p>
+            </div>
+
+            <div class="card">
+                <h4>🪨 龍安寺</h4>
+                <p>觀賞著名的枯山水石庭，感受禪意。</p>
             </div>
             
-            <div class="card spot-card">
-                <h4>👘 景點：和服散策 (南禪寺/真如堂)</h4>
-                <p>路線：Tekuteku 和服 → 南禪寺 (水路閣/三門) → 沿著哲學之道散步 → 真如堂 (紅葉名所)。</p>
-                <p class="highlight">導遊攻略：真如堂紅葉極美，南禪寺水路閣是拍照熱點。</p>
-                <button onclick="navigateTo('真如堂')">🧭 導航按鈕</button>
-            </div>
-            
-            <div class="card dining-card">
-                <h4>🍽️ 餐飲：祇園夜生活</h4>
-                <p class="highlight must-eat">🔴 必吃美食：先斗町串燒/居酒屋 (體驗京都窄巷氛圍)。</p>
+            <div class="card">
+                <h4>🍵 購物</h4>
+                <p>在西陣織會館附近可以購買<span class="must-buy">特色絲織品小物</span>。</p>
             </div>
         </section>
 
         <section class="day-card">
-            <div class="weather-widget">☀️ 預報: 晴天, 12°C / 5°C</div>
-            <h2>Day 4: 12/03 (三) 紅葉狩王者 (東福寺/永觀堂)</h2>
-            <img src="images/day4_tofukuji.jpg" alt="東福寺通天橋紅葉" class="day-image">
+            <h2>Day 4: 12/03 (三) 清水寺與祇園花見小路</h2>
+            <img src="images/day4_kiyomizu.jpg" alt="清水寺本堂" class="day-image">
             
-            <div class="card spot-card">
-                <h4>🍁 上午：東福寺 (通天橋)</h4>
-                <p class="highlight important-notice">🔥 重要攻略：務必 08:30 開門前抵達，避開人潮，直衝通天橋。</p>
-                <button onclick="navigateTo('東福寺')">🧭 導航按鈕</button>
+            <div class="card">
+                <h4>🏯 清水寺</h4>
+                <p>從清水舞台眺望楓葉海。建議早上參觀避開旅行團。</p>
+            </div>
+            
+            <div class="card">
+                <h4>⛩️ 地主神社</h4>
+                <p>清水寺附近的戀愛結緣神社。</p>
             </div>
 
-            <div class="card spot-card">
-                <h4>🍂 下午：永觀堂 (禪林寺)</h4>
-                <p class="highlight">導遊攻略：京都最強紅葉景點，別忘了參觀放生池。</p>
-                <button onclick="navigateTo('永觀堂')">🧭 導航按鈕</button>
-            </div>
-
-            <div class="card shopping-card">
-                <h4>🛍️ 晚上：京都車站逛街/晚餐</h4>
-                <p>包含：伊勢丹百貨、Porta 地下街、Cube (伴手禮區)。</p>
-                <p class="highlight must-eat">🔴 必吃美食：晚餐推薦**京都車站壽喜燒** (如：モリタ屋/弘)。</p>
-                <button onclick="navigateTo('京都車站')">🧭 導航按鈕</button>
+            <div class="card">
+                <h4>🚶 祇園花見小路</h4>
+                <p>尋找藝伎的蹤跡。傍晚前往氛圍更佳。</p>
             </div>
         </section>
 
         <section class="day-card">
-            <div class="weather-widget">🌤️ 預報: 多雲, 13°C / 6°C</div>
-            <h2>Day 5: 12/04 (四) 宇治抹茶一日遊</h2>
-            <img src="images/day5_uji.jpg" alt="宇治平等院" class="day-image">
+            <h2>Day 5: 12/04 (四) 千本鳥居與奈良小鹿</h2>
+            <img src="images/day5_inaritai.jpg" alt="伏見稻荷大社的千本鳥居" class="day-image">
             
-            <div class="card spot-card">
-                <h4>🍵 景點：宇治主題</h4>
-                <p>包含：平等院鳳凰堂 (世界遺產)、宇治橋、源氏物語博物館。</p>
-                <p class="highlight must-eat">🔴 必吃美食：中村藤吉/伊藤久右衛門本店 (抹茶聖代、抹茶蕎麥麵)。</p>
-                <p class="highlight">導遊攻略：建議從平等院開始，然後在宇治橋邊享用抹茶甜點。</p>
-                <button onclick="navigateTo('宇治平等院')">🧭 導航按鈕 (宇治)</button>
+            <div class="card">
+                <h4>🦊 伏見稻荷大社</h4>
+                <p>走訪著名的<span class="highlight">千本鳥居</span>，建議穿著舒適鞋子。</p>
             </div>
 
-            <div class="card shopping-card">
-                <h4>🛍️ 購物：京都必買伴手禮</h4>
-                <p class="highlight must-buy">🟢 必買伴手禮 1：茶之菓 (馬克·薩維尼的抹茶餅乾)。</p>
-                <p class="highlight must-buy">🟢 必買伴手禮 2：Yojiya (優佳雅) 吸油面紙。</p>
-                <p class="highlight must-buy">🟢 必買伴手禮 3：生八橋 (Nama Yatsuhashi)。</p>
+            <div class="card">
+                <h4>🦌 奈良公園與東大寺</h4>
+                <p>從京都車站搭乘 JR 前往奈良。記得餵食小鹿仙貝！</p>
+                <button onclick="navigateTo('奈良公園')">奈良公園導航</button>
             </div>
         </section>
 
         <section class="day-card">
-            <div class="weather-widget">☀️ 預報: 晴朗, 11°C / 4°C</div>
-            <h2>Day 6: 12/05 (五) 前往關西機場</h2>
-            <img src="images/day6_kix.jpg" alt="關西機場" class="day-image">
+            <h2>Day 6: 12/05 (五) 賦歸</h2>
+            <img src="images/day6_kyoto_station.jpg" alt="京都車站" class="day-image">
             
-            <div class="card transport-card">
-                <h4>🧳 交通：京都車站 → 關西機場 (KIX)</h4>
-                <p>10:30：從京都車站搭乘 **HARUKA 特急列車** (需提前劃位)。</p>
-                <p class="highlight important-notice">⚠️ 重要提醒：回程是從 **關西機場 (KIX)**，不要跑錯！</p>
-                <button onclick="navigateTo('京都車站 HARUKA')">🧭 交通導航</button>
+            <div class="card important-notice">
+                <h4>💡 提醒</h4>
+                <p>搭乘 Haruka 特急列車返回關西機場。確認<span class="highlight">車票時間</span>，並預留足夠的退稅時間。</p>
             </div>
-            
-            <div class="card transport-card">
-                <h4>✈️ 航班：回程</h4>
-                <p>14:00 星宇 JX823 起飛。</p>
+
+            <div class="card">
+                <h4>💸 最後購物</h4>
+                <p>可在京都車站的伊勢丹百貨進行<span class="must-buy">最後採買</span>。</p>
             </div>
         </section>
 
-    </main> 
+    </main>
 
-    <section id="info" class="tab-content">
-        <h2>📌 旅遊資訊與預算</h2>
+    <main id="info" class="tab-content">
         
-        <div class="card info-card">
-            <h4>✈️ 航班資訊</h4>
-            <p>去程 JX834: TPE → UKB (神戶) 10:18</p>
-            <p>回程 JX823: KIX (關西) 14:00 → TPE</p>
-            <p class="highlight important-notice">預約代號: [A2577XX] / [B9011YY]</p>
-        </div>
+        <section class="day-card">
+            <h2>☁️ 京都市即時天氣</h2>
+            <div id="weather-display">
+                <p style="text-align: center; color: #888;">正在載入天氣資訊...</p>
+                <button onclick="getKyotoWeather()">刷新天氣</button>
+            </div>
+            <p style="font-size: 13px; color: #888; margin-top: 10px;">資料來源：OpenWeatherMap</p>
+        </section>
 
-        <div class="card info-card">
-            <h4>🏠 住宿與聯絡 (最新版)</h4>
-            <p>11/30-12/2: ホテルメルディア京都四条大宮 (Melodia Shijo Omiya)</p>
-            <p>12/2-12/5: Wander Kyoto Nanajo (七條)</p>
-        </div>
 
-        <div class="card info-card">
-            <h4>📞 緊急聯絡電話</h4>
-            <p>台灣駐日代表處: (06) 6120-8581</p>
-            <p>日本報警/救護: 110 / 119</p>
-        </div>
-        
-        <div class="card info-card" id="converter-widget">
-            <h4>💲 匯率換算器 (JPY → TWD)</h4>
+        <section class="day-card">
+            <h2>💱 匯率換算器 (JPY ⇌ TWD)</h2>
             
             <div class="converter-input">
-                <label for="exchangeRate">設定匯率 (1 JPY = ? TWD)</label>
-                <input type="number" id="exchangeRate" placeholder="例如：0.22" value="0.22">
-                <button onclick="saveRate()">儲存匯率</button>
-            </div>
-
-            <hr class="separator">
-
-            <div class="converter-input">
-                <label for="jpyAmount">輸入日圓金額 (JPY)</label>
-                <input type="number" id="jpyAmount" placeholder="0" oninput="convertCurrency()">
-            </div>
-
-            <div class="converter-output">
-                <p>約等於台幣 (TWD):</p>
-                <p id="twdResult" class="result-display">0</p>
-            </div>
-        </div>
-
-        <div class="card info-card" id="accounting-widget">
-            <h4>💰 簡易記帳 (JPY)</h4>
-            
-            <div class="expense-form">
-                <input type="date" id="expenseDate">
-                <input type="number" id="amount" placeholder="金額 (必填)" required>
-                <select id="category">
-                    <option value="餐飲">餐飲 🍽️</option>
-                    <option value="交通">交通 🚄</option>
-                    <option value="住宿">住宿 🏠</option>
-                    <option value="門票">門票 🎟️</option>
-                    <option value="購物">購物 🛍️</option>
-                    <option value="其他">其他...</option>
-                </select>
-                <input type="text" id="description" placeholder="備註 (如：拉麵)" required>
-                <button onclick="addExpense()">+ 新增</button>
-            </div>
-
-            <h4 style="margin-top: 30px;">🗓️ 每日花費總結 (按類別)</h4>
-            <div id="daily-summary-report" class="daily-summary-report">
-                <p style="text-align: center; color: #888;">尚無紀錄，請先新增花費。</p>
-            </div>
-        
-            <h4 style="margin-top: 30px;">🧾 所有記帳明細</h4>
-            <table class="expense-table">
-                <thead>
-                    <tr><th>日期</th><th>項目</th><th>類別</th><th>金額 (JPY)</th></tr>
-                </thead>
-                <tbody id="expense-list">
-                    </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">總計花費:</td>
-                        <td id="total-expense">0 JPY</td>
-                    </tr>
-                </tfoot>
-            </table>
-            <button class="clear-btn" onclick="clearExpenses()">🗑️ 清空紀錄</button>
-        </div>
-    </section>
-
-    <script src="app.js"></script>
-</body>
+                <label for="exchangeRate">當前匯率 (1 JPY = ? TWD)</label>
+                <input type="number" id="exchangeRate" value="0.22" step="0.001" placeholder="請輸入匯率">
+                <button onclick="
 </html>
+

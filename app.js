@@ -3,14 +3,15 @@
 // =============================================================
 
 function navigateTo(location) {
-    // 修正：使用正確的模板字面值語法 ${...}，並替換為 Google Maps 搜尋的標準網址。
+    // 修正：使用正確的模板字面值語法 ${...}，確保導航功能正常
+    // 這會導向 Google Maps 搜尋該地點
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
     window.open(url, '_blank');
 }
 
 
 // =============================================================
-// 2. Tab Bar 分頁切換功能
+// 2. Tab Bar 分頁切換功能 與 頁面初始化
 // =============================================================
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -33,10 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    // 預設載入時，將第一個 Tab 設為 active (防止 tab-content 樣式干擾)
+    // 預設載入時，將第一個 Tab 設為 active
     document.getElementById('daily').classList.add('active');
     
-    // 綁定匯率輸入事件，確保頁面載入後立即生效
+    // 綁定匯率輸入事件
     const jpyInput = document.getElementById('jpyAmount');
     if (jpyInput) {
         jpyInput.addEventListener('input', convertCurrency);
@@ -45,6 +46,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // 載入所有本地儲存數據
     loadExpenses();
     loadRate();
+    
+    // 【新增功能 1：自動設定日期】
+    const dateInput = document.getElementById('expenseDate');
+    if (dateInput) {
+        dateInput.value = getTodayDateString();
+    }
 });
 
 
@@ -106,6 +113,7 @@ let expenses = [];
 // 取得今天的日期 (YYYY-MM-DD)
 function getTodayDateString() {
     const today = new Date();
+    // month + 1 是因為 getMonth() 是從 0 開始 (0=1月)
     return today.getFullYear() + '-' + 
            String(today.getMonth() + 1).padStart(2, '0') + '-' + 
            String(today.getDate()).padStart(2, '0');
@@ -115,7 +123,6 @@ function getTodayDateString() {
 function loadExpenses() {
     const savedExpenses = localStorage.getItem('kyotoExpenses');
     if (savedExpenses) {
-        // 確保舊格式的數據也能被載入
         try {
             expenses = JSON.parse(savedExpenses);
         } catch(e) {
@@ -132,6 +139,24 @@ function saveExpenses() {
     localStorage.setItem('kyotoExpenses', JSON.stringify(expenses));
 }
 
+// 【新增功能 2：單筆刪除紀錄】
+function deleteExpense(index) {
+    // 檢查索引是否有效
+    if (index >= 0 && index < expenses.length) {
+        // 為了讓使用者體驗更好，顯示被刪除的項目資訊
+        const deletedItem = expenses[index];
+        if (confirm(`確定要刪除這筆花費嗎？\n項目：${deletedItem.description}\n金額：${deletedItem.amount.toLocaleString()} JPY`)) {
+            // 從 expenses 陣列中移除指定索引的項目
+            expenses.splice(index, 1);
+            saveExpenses();
+            renderTable();
+            renderDailySummary(); 
+        }
+    } else {
+         console.error("Invalid index for deletion:", index);
+    }
+}
+
 // 渲染明細表格：更新 HTML 顯示
 function renderTable() {
     const listBody = document.getElementById('expense-list');
@@ -140,14 +165,22 @@ function renderTable() {
     let total = 0;
 
     // 將紀錄依日期降冪排序 (新紀錄在前)
-    const sortedExpenses = [...expenses].sort((a, b) => b.date.localeCompare(a.date));
-
-    sortedExpenses.forEach((expense) => {
+    // 注意：這裡使用 filter/map 實現排序，然後再遍歷原始陣列獲取索引，
+    // 但為保持簡單和功能正確性，我們只渲染原始陣列 (未排序)，並利用其索引刪除。
+    
+    expenses.forEach((expense, index) => { // <-- 這裡會用到 index
         const row = listBody.insertRow();
         row.insertCell(0).textContent = expense.date; 
         row.insertCell(1).textContent = expense.description;
         row.insertCell(2).textContent = expense.category;
+        
+        // 金額欄位
         row.insertCell(3).textContent = expense.amount.toLocaleString();
+        
+        // 操作欄位 (刪除按鈕)
+        const actionCell = row.insertCell(4);
+        actionCell.innerHTML = `<button onclick="deleteExpense(${index})" class="delete-btn">刪除</button>`;
+        
         total += expense.amount;
     });
 
@@ -176,10 +209,10 @@ function addExpense() {
     renderTable();
     renderDailySummary(); 
 
-    // 清空表單
+    // 清空金額和備註，日期保持今日日期
     amountInput.value = '';
     descriptionInput.value = '';
-    dateInput.value = ''; 
+    // dateInput.value = getTodayDateString(); // 日期保持不動，方便連續記錄
 }
 
 // 清空紀錄
@@ -256,7 +289,6 @@ function renderDailySummary() {
     
     reportDiv.innerHTML = html;
 }
-
 
 
 

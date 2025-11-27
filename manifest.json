@@ -1,0 +1,17 @@
+{
+  "name": "京都極簡旅程 - 賞楓",
+  "short_name": "京都之旅",
+  "description": "星宇京都賞楓行程 PWA 小工具。",
+  "start_url": "/kyoto-pwa/",
+  "display": "standalone",
+  "background_color": "#fcfcfc",
+  "theme_color": "#ffffff",
+  "icons": [
+    {
+      "src": "images/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+    // 部署時，您需要手動創建這些圖標，此處為簡化版
+  ]
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>京都極簡旅程</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#f0f0f0"> 
+</head>
+<body>
+    <header class="app-header">
+        <h1>京都極簡旅程 ⛩️</h1>
+    </header>
+    
+    <section class="info-card">
+        <h3>✈️ 航班/住宿</h3>
+        <p>JX834: TPE → UKB (神戶) 10:18</p>
+        <p>JX823: KIX (關西) 14:00 → TPE</p>
+        <p>住宿 1: SAKURA TERRACE THE ATELIER (11/30-12/2)</p>
+        <p>住宿 2: Wander Kyoto Nanajo (12/2-12/5)</p>
+    </section>
+
+    <section class="day-card">
+        <div class="weather-widget">☀️ 預報: 晴朗, 13°C / 6°C</div>
+        <h2>Day 1: 11/30 (日) 抵達與下鴨神社</h2>
+        
+        <div class="card transport-card">
+            <h4>🚄 交通：神戶機場 → 京都車站</h4>
+            <p>路線：Port Liner → JR 三宮 (新快速) → 京都 (約 1.5 小時)</p>
+        </div>
+        
+        <div class="card spot-card">
+            <h4>🏯 景點：下鴨神社 / 糺之森</h4>
+            <p class="highlight">導遊提示：世界遺產，糺之森是必走參道。</p>
+            <button onclick="navigateTo('下鴨神社')">🧭 導航按鈕</button>
+        </div>
+        
+        <div class="card dining-card">
+            <h4>🍽️ 餐飲：京都車站拉麵小路</h4>
+            <p class="highlight must-eat">🔴 必吃美食：東大拉麵或寶屋拉麵</p>
+        </div>
+    </section>
+    
+    <script src="app.js"></script>
+</body>
+</html>

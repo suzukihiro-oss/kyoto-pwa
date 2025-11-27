@@ -21,35 +21,45 @@ document.addEventListener('DOMContentLoaded', () => {
     tabButtons.forEach(button => {
         button.addEventListener('click', () => {
             const targetTab = button.getAttribute('data-tab');
+
+            // 移除所有按鈕的 active 狀態
             tabButtons.forEach(btn => btn.classList.remove('active'));
+            // 隱藏所有內容
             tabContents.forEach(content => content.classList.remove('active'));
+
+            // 激活被點擊的按鈕
             button.classList.add('active');
+            // 顯示目標內容區塊
             document.getElementById(targetTab).classList.add('active');
         });
     });
     
+    // 預設載入時，將第一個 Tab 設為 active
     document.getElementById('daily').classList.add('active');
     
     // --- 載入與初始化所有功能 ---
     
+    // 綁定匯率輸入事件
     const jpyInput = document.getElementById('jpyAmount');
     if (jpyInput) {
         jpyInput.addEventListener('input', convertCurrency);
     }
 
+    // 載入所有本地儲存數據
     loadExpenses();
     loadRate();
     
-    // 初始化楓葉特效
-    initLeafEffect(); 
+    // 注意：已移除 initLeafEffect() 的呼叫
 });
 
 
 // =============================================================
-// 3. 匯率換算器功能
+// 3. 匯率換算器功能 (使用 Local Storage)
 // =============================================================
 
 const DEFAULT_RATE = 0.22; 
+
+// 載入並顯示已儲存的匯率
 function loadRate() {
     const savedRate = localStorage.getItem('exchangeRate');
     const rateInput = document.getElementById('exchangeRate');
@@ -57,6 +67,8 @@ function loadRate() {
         rateInput.value = savedRate || DEFAULT_RATE;
     }
 }
+
+// 儲存匯率到 Local Storage
 function saveRate() {
     const rateInput = document.getElementById('exchangeRate');
     const rate = parseFloat(rateInput.value);
@@ -66,52 +78,71 @@ function saveRate() {
         rateInput.value = DEFAULT_RATE;
         return;
     }
+    
     localStorage.setItem('exchangeRate', rate);
-    convertCurrency();
+    convertCurrency(); // 儲存後立即重新計算
     alert(`匯率已更新並儲存：1 JPY = ${rate} TWD`);
 }
+
+// 執行換算
 function convertCurrency() {
     const jpyAmountInput = document.getElementById('jpyAmount');
     const twdResultElement = document.getElementById('twdResult');
     const rate = parseFloat(localStorage.getItem('exchangeRate')) || DEFAULT_RATE;
+    
     const jpy = parseFloat(jpyAmountInput ? jpyAmountInput.value : 0) || 0;
+    
     const twd = jpy * rate;
     
     if (twdResultElement) {
+        // 使用 toLocaleString() 增加千位分隔符，並保留兩位小數
         twdResultElement.textContent = twd.toLocaleString('en-US', { maximumFractionDigits: 2 });
     }
 }
 
 
 // =============================================================
-// 4. 記帳功能核心邏輯
+// 4. 記帳功能核心邏輯 (使用 Local Storage 與日期彙總)
 // =============================================================
 
 let expenses = []; 
+
+// 取得今天的日期 (YYYY-MM-DD)
 function getTodayDateString() {
     const today = new Date();
-    return today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
+    return today.getFullYear() + '-' + 
+           String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+           String(today.getDate()).padStart(2, '0');
 }
+
+// 載入紀錄：從 Local Storage 讀取數據
 function loadExpenses() {
     const savedExpenses = localStorage.getItem('kyotoExpenses');
     if (savedExpenses) {
         try {
             expenses = JSON.parse(savedExpenses);
         } catch(e) {
+            console.error("Error parsing expenses from localStorage", e);
             expenses = [];
         }
     }
     renderTable();
     renderDailySummary(); 
 }
+
+// 儲存紀錄：將數據寫入 Local Storage
 function saveExpenses() {
     localStorage.setItem('kyotoExpenses', JSON.stringify(expenses));
 }
+
+// 渲染明細表格：更新 HTML 顯示
 function renderTable() {
     const listBody = document.getElementById('expense-list');
     const totalElement = document.getElementById('total-expense');
     listBody.innerHTML = '';
     let total = 0;
+
+    // 將紀錄依日期降冪排序 (新紀錄在前)
     const sortedExpenses = [...expenses].sort((a, b) => b.date.localeCompare(a.date));
 
     sortedExpenses.forEach((expense) => {
@@ -125,6 +156,8 @@ function renderTable() {
 
     totalElement.textContent = total.toLocaleString() + ' JPY';
 }
+
+// 新增紀錄
 function addExpense() {
     const dateInput = document.getElementById('expenseDate');
     const amountInput = document.getElementById('amount');
@@ -146,10 +179,13 @@ function addExpense() {
     renderTable();
     renderDailySummary(); 
 
+    // 清空表單
     amountInput.value = '';
     descriptionInput.value = '';
     dateInput.value = ''; 
 }
+
+// 清空紀錄
 function clearExpenses() {
     if (confirm('確定要清除所有記帳紀錄嗎？此操作不可逆！')) {
         expenses = [];
@@ -158,8 +194,12 @@ function clearExpenses() {
         renderDailySummary(); 
     }
 }
+
+// 計算每日花費總結
 function calculateDailySummary() {
     const summary = {};
+    
+    // 依日期和類別分組並加總
     expenses.forEach(expense => {
         const date = expense.date;
         const category = expense.category;
@@ -167,33 +207,44 @@ function calculateDailySummary() {
         if (!summary[date]) {
             summary[date] = { total: 0, categories: {} };
         }
+        
         if (!summary[date].categories[category]) {
             summary[date].categories[category] = 0;
         }
+        
         summary[date].categories[category] += expense.amount;
         summary[date].total += expense.amount;
     });
+    
+    // 依日期降冪排序 (新紀錄在前)
     const sortedDates = Object.keys(summary).sort().reverse();
+    
     return { sortedDates, summary };
 }
+
+// 渲染每日花費總結表格
 function renderDailySummary() {
     const reportDiv = document.getElementById('daily-summary-report');
     if (!reportDiv) return; 
 
     const { sortedDates, summary } = calculateDailySummary();
+    
     if (sortedDates.length === 0) {
         reportDiv.innerHTML = '<p style="text-align: center; color: #888;">尚無紀錄，請先新增花費。</p>';
         return;
     }
     
     let html = '';
+    
     sortedDates.forEach(date => {
         const daySummary = summary[date];
+        
         html += `<div class="day-summary-card">`;
         html += `<h3>${date} <span class="total-badge">${daySummary.total.toLocaleString()} JPY</span></h3>`;
         html += `<table class="summary-table">`;
         
         const categories = Object.keys(daySummary.categories).sort();
+        
         categories.forEach(category => {
             const amount = daySummary.categories[category];
             html += `<tr>`;
@@ -201,47 +252,12 @@ function renderDailySummary() {
             html += `<td style="text-align: right;">${amount.toLocaleString()} JPY</td>`;
             html += `</tr>`;
         });
+        
         html += `</table>`;
         html += `</div>`;
     });
+    
     reportDiv.innerHTML = html;
-}
-
-
-// =============================================================
-// 5. 楓葉特效功能 (使用圖片與快取清除機制)
-// =============================================================
-
-function initLeafEffect() {
-    const container = document.getElementById('leaf-container');
-    if (!container) return; 
-
-    const numLeaves = 25; 
-    const leafImages = ['leaf1.png', 'leaf2.png', 'leaf3.png']; 
-    // <<--- 快取清除版本號！這個版本號會強制瀏覽器重新下載圖片
-    const cacheBuster = 'v=2'; 
-
-    for (let i = 0; i < numLeaves; i++) {
-        const leaf = document.createElement('div');
-        leaf.className = 'leaf';
-
-        const selectedImage = leafImages[Math.floor(Math.random() * leafImages.length)];
-        // 將快取版本號加入圖片 URL 中，確保圖片是最新版本
-        leaf.style.backgroundImage = `url('images/${selectedImage}?${cacheBuster}')`;
-        
-        leaf.style.left = Math.random() * 100 + 'vw';
-        
-        const size = Math.random() * 15 + 30; 
-        leaf.style.width = size + 'px';
-        leaf.style.height = size + 'px';
-        
-        const duration = Math.random() * 10 + 8; 
-        leaf.style.animationDuration = duration + 's, ' + (duration / 2) + 's';
-        
-        leaf.style.animationDelay = Math.random() * 10 + 's, ' + Math.random() * 10 + 's';
-        
-        container.appendChild(leaf);
-    }
 }
 
 

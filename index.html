@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#F8F8F4">
-    <title>2025京都秋遊</title>
+    <title>京都秋遊 </title>
     
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="apple-icon.png"> 
@@ -12,66 +12,8 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="leaf-container"></div> <header class="app-header">
-        <h1>🍁 2025 京都秋遊 </h1>
-    ```
-
-### 🛠️ 步驟二：修改 `style.css` (定義楓葉樣式與動畫)
-
-請在您的 **`style.css`** 檔案底部，加入以下新的 CSS 程式碼。這段程式碼定義了楓葉如何落下和飄動：
-
-#### `style.css` (新增部分)
-
-```css
-/* ============================================================= */
-/* 6. 楓葉特效樣式 */
-/* ============================================================= */
-#leaf-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none; /* 讓特效不阻擋點擊網頁 */
-    z-index: 9999; /* 確保特效在最上層 */
-    overflow: hidden; /* 防止特效造成滾動條 */
-}
-
-.leaf {
-    position: absolute;
-    /* 簡化葉子形狀，用圓形模擬 */
-    border-radius: 50%; 
-    opacity: 0.8;
     
-    /* 結合兩個動畫：落下 (fall) 和 飄動 (sway) */
-    animation: fall linear infinite, sway ease-in-out infinite;
-    transform: rotate(0deg);
-}
-
-/* 楓葉落下動畫 (從頂部到底部) */
-@keyframes fall {
-    0% {
-        top: -10%;
-    }
-    100% {
-        top: 110%;
-    }
-}
-
-/* 楓葉飄動動畫 (左右晃動並旋轉) */
-@keyframes sway {
-    0% {
-        transform: translateX(0) rotate(0deg);
-    }
-    50% {
-        transform: translateX(50px) rotate(180deg);
-    }
-    100% {
-        transform: translateX(0) rotate(360deg);
-    }
-}
-
-    <header class="app-header">
+    <div id="leaf-container"></div> <header class="app-header">
         <h1>🍁 2025 京都秋遊 </h1>
     </header>
 
@@ -101,7 +43,7 @@
             
             <div class="card dining-card">
                 <h4>🍽️ 晚餐：和牛燒肉 Wagyu Yakiniku Asuka</h4>
-                <p class="highlight must-eat">🔴 必吃美食：預約 18:30 Wagyu Yakiniku Asuka (近四條大宮)</p>
+                <p class="highlight must-eat">🔴 必吃美食：預約 18:30 Wagyu Yakiniku Asuka (近錦市場)</p>
                 <button onclick="navigateTo('Wagyu Yakiniku Asuka')">🧭 導航按鈕</button>
             </div>
         </section>
@@ -174,141 +116,8 @@
 
             <div class="card shopping-card">
                 <h4>🛍️ 晚上：京都車站逛街/晚餐</h4>
-                <p>包含：伊勢丹百貨、Porta 地下街、Cube (伴手禮區)。</p>
-                <p class="highlight must-eat">🔴 必吃美食：晚餐推薦**京都車站壽喜燒** (如：モリタ屋/弘)。</p>
-                <button onclick="navigateTo('京都車站')">🧭 導航按鈕</button>
-            </div>
-        </section>
+                <p>包含：伊勢丹百貨、Porta 地下街、Cube (伴手
 
-        <section class="day-card">
-            <div class="weather-widget">🌤️ 預報: 多雲, 13°C / 6°C</div>
-            <h2>Day 5: 12/04 (四) 宇治抹茶一日遊</h2>
-            <img src="images/day5_uji.jpg" alt="宇治平等院" class="day-image">
-            
-            <div class="card spot-card">
-                <h4>🍵 景點：宇治主題</h4>
-                <p>包含：平等院鳳凰堂 (世界遺產)、宇治橋、源氏物語博物館。</p>
-                <p class="highlight must-eat">🔴 必吃美食：中村藤吉/伊藤久右衛門本店 (抹茶聖代、抹茶蕎麥麵)。</p>
-                <p class="highlight">導遊攻略：建議從平等院開始，然後在宇治橋邊享用抹茶甜點。</p>
-                <button onclick="navigateTo('宇治平等院')">🧭 導航按鈕 (宇治)</button>
-            </div>
-
-            <div class="card shopping-card">
-                <h4>🛍️ 購物：京都必買伴手禮</h4>
-                <p class="highlight must-buy">🟢 必買伴手禮 1：茶之菓 (馬克·薩維尼的抹茶餅乾)。</p>
-                <p class="highlight must-buy">🟢 必買伴手禮 2：Yojiya (優佳雅) 吸油面紙。</p>
-                <p class="highlight must-buy">🟢 必買伴手禮 3：生八橋 (Nama Yatsuhashi)。</p>
-            </div>
-        </section>
-
-        <section class="day-card">
-            <div class="weather-widget">☀️ 預報: 晴朗, 11°C / 4°C</div>
-            <h2>Day 6: 12/05 (五) 前往關西機場</h2>
-            <img src="images/day6_kix.jpg" alt="關西機場" class="day-image">
-            
-            <div class="card transport-card">
-                <h4>🧳 交通：京都車站 → 關西機場 (KIX)</h4>
-                <p>10:30：從京都車站搭乘 **HARUKA 特急列車** (需提前劃位)。</p>
-                <p class="highlight important-notice">⚠️ 重要提醒：回程是從 **關西機場 (KIX)**，不要跑錯！</p>
-                <button onclick="navigateTo('京都車站 HARUKA')">🧭 交通導航</button>
-            </div>
-            
-            <div class="card transport-card">
-                <h4>✈️ 航班：回程</h4>
-                <p>14:00 星宇 JX823 起飛。</p>
-            </div>
-        </section>
-
-    </main> 
-
-    <section id="info" class="tab-content">
-        <h2>📌 旅遊資訊與預算</h2>
-        
-        <div class="card info-card">
-            <h4>✈️ 航班資訊</h4>
-            <p>去程 JX834: TPE → UKB (神戶) 10:18</p>
-            <p>回程 JX823: KIX (關西) 14:00 → TPE</p>
-            <p class="highlight important-notice">預約代號: [A2577XX] / [B9011YY]</p>
-        </div>
-
-        <div class="card info-card">
-            <h4>🏠 住宿與聯絡 (最新版)</h4>
-            <p>11/30-12/2: ホテルメルディア京都四条大宮 (Melodia Shijo Omiya)</p>
-            <p>12/2-12/5: Wander Kyoto Nanajo (七條)</p>
-        </div>
-
-        <div class="card info-card">
-            <h4>📞 緊急聯絡電話</h4>
-            <p>台灣駐日代表處: (06) 6120-8581</p>
-            <p>日本報警/救護: 110 / 119</p>
-        </div>
-        
-        <div class="card info-card" id="converter-widget">
-            <h4>💲 匯率換算器 (JPY → TWD)</h4>
-            
-            <div class="converter-input">
-                <label for="exchangeRate">設定匯率 (1 JPY = ? TWD)</label>
-                <input type="number" id="exchangeRate" placeholder="例如：0.22" value="0.22">
-                <button onclick="saveRate()">儲存匯率</button>
-            </div>
-
-            <hr class="separator">
-
-            <div class="converter-input">
-                <label for="jpyAmount">輸入日圓金額 (JPY)</label>
-                <input type="number" id="jpyAmount" placeholder="0" oninput="convertCurrency()">
-            </div>
-
-            <div class="converter-output">
-                <p>約等於台幣 (TWD):</p>
-                <p id="twdResult" class="result-display">0</p>
-            </div>
-        </div>
-
-        <div class="card info-card" id="accounting-widget">
-            <h4>💰 簡易記帳 (JPY)</h4>
-            
-            <div class="expense-form">
-                <input type="date" id="expenseDate">
-                <input type="number" id="amount" placeholder="金額 (必填)" required>
-                <select id="category">
-                    <option value="餐飲">餐飲 🍽️</option>
-                    <option value="交通">交通 🚄</option>
-                    <option value="住宿">住宿 🏠</option>
-                    <option value="門票">門票 🎟️</option>
-                    <option value="購物">購物 🛍️</option>
-                    <option value="其他">其他...</option>
-                </select>
-                <input type="text" id="description" placeholder="備註 (如：拉麵)" required>
-                <button onclick="addExpense()">+ 新增</button>
-            </div>
-
-            <h4 style="margin-top: 30px;">🗓️ 每日花費總結 (按類別)</h4>
-            <div id="daily-summary-report" class="daily-summary-report">
-                <p style="text-align: center; color: #888;">尚無紀錄，請先新增花費。</p>
-            </div>
-        
-            <h4 style="margin-top: 30px;">🧾 所有記帳明細</h4>
-            <table class="expense-table">
-                <thead>
-                    <tr><th>日期</th><th>項目</th><th>類別</th><th>金額 (JPY)</th></tr>
-                </thead>
-                <tbody id="expense-list">
-                    </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="3">總計花費:</td>
-                        <td id="total-expense">0 JPY</td>
-                    </tr>
-                </tfoot>
-            </table>
-            <button class="clear-btn" onclick="clearExpenses()">🗑️ 清空紀錄</button>
-        </div>
-    </section>
-
-    <script src="app.js"></script>
-</body>
-</html>
 
 
 

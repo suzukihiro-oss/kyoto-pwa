@@ -11,7 +11,6 @@ import {
     serverTimestamp, getDocs, where
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 // 為了避免因排序造成索引錯誤，這裡我們將不在 Firestore 內使用 orderBy。
-// 如果需要排序，會在客戶端 (Client-side) 進行。
 
 // Firestore 和 Auth 實例
 let app;
@@ -23,11 +22,13 @@ const EXPENSES_COLLECTION_NAME = 'kyoto-expenses';
 // Firebase 設定和 App ID (從環境變量獲取)
 const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
 let firebaseConfig = null;
-if (typeof __firebase_config !== 'undefined') {
+// 確保 __firebase_config 存在且不是空字串，然後嘗試解析
+if (typeof __firebase_config !== 'undefined' && __firebase_config) {
     try {
         firebaseConfig = JSON.parse(__firebase_config);
     } catch (e) {
         console.error("無法解析 __firebase_config:", e);
+        // 如果解析失敗，firebaseConfig 仍為 null，將觸發錯誤訊息
     }
 }
 
@@ -108,8 +109,8 @@ const writeString = (view, offset, string) => {
  */
 async function initializeFirebase() {
     if (!firebaseConfig) {
+        // 如果配置缺失，印出錯誤並更新狀態
         console.error("Firebase 配置缺失。無法初始化 Firestore/Auth。");
-        // 即使沒有配置，也要確保頁面邏輯繼續執行
         document.getElementById('app-status').textContent = 'Firebase 設置失敗，記帳功能無法使用。';
         return;
     }
@@ -146,7 +147,7 @@ async function initializeFirebase() {
 
     } catch (error) {
         console.error("Firebase 初始化或認證出錯:", error);
-        document.getElementById('app-status').textContent = `應用程式錯誤：${error.message}`;
+        document.getElementById('app-status').textContent = `Firebase 設置失敗，記帳功能無法使用。錯誤: ${error.message}`;
     }
 }
 
@@ -203,7 +204,7 @@ function handleConvert() {
 
     // 顯示結果
     resultDisplay.textContent = twdAmount.toFixed(2);
-    statusText.textContent = `當前參考匯率 (JPY->TWD): ${EXCHANGE_RATE_RATE_JPY_TO_TWD}。`;
+    statusText.textContent = `當前參考匯率 (JPY->TWD): ${EXCHANGE_RATE_JPY_TO_TWD}。`;
 }
 
 // =================================================================
@@ -230,6 +231,12 @@ function getExpenseCollectionPath() {
 async function handleAddExpense(e) {
     e.preventDefault();
     
+    if (!db || !userId) {
+        console.error("Firebase/Firestore 尚未初始化或未登入。");
+        alert('記帳功能尚未啟用，請檢查應用程式狀態。');
+        return;
+    }
+
     const form = document.getElementById('expense-form');
     const path = getExpenseCollectionPath();
 
@@ -284,7 +291,6 @@ function renderExpenses(expenses) {
     tableFooter.innerHTML = '';
 
     // 1. 處理排序 (在客戶端按日期降序，如果日期相同，則按 timestamp 降序)
-    // 確保 expenses 中的 timestamp 字段存在且是 Date 對象或 Firestore Timestamp
     expenses.sort((a, b) => {
         // 先按日期降序排序 (最近的日期在前)
         if (a.date < b.date) return 1;
@@ -383,6 +389,8 @@ function renderExpenses(expenses) {
  * @param {Event} e - 點擊事件
  */
 async function handleDeleteExpense(e) {
+    if (!db) return; // 確保 db 已初始化
+
     const docId = e.target.getAttribute('data-id');
     const path = getExpenseCollectionPath();
     
@@ -409,7 +417,6 @@ function loadExpenses() {
     if (!path || !db) return;
 
     // 創建查詢。注意：避免使用 orderBy() 除非您確定 Firestore 索引已建立。
-    // 我們在客戶端進行排序。
     const q = query(collection(db, path)); 
 
     // 實時監聽
@@ -447,6 +454,8 @@ window.onload = function() {
 
     // 設置匯率換算監聽器
     document.getElementById('convert-btn').addEventListener('click', handleConvert);
+    // 第一次載入時先執行一次換算
+    handleConvert();
 
     // 設置記帳表單監聽器
     const expenseForm = document.getElementById('expense-form');

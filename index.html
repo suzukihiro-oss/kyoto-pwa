@@ -13,15 +13,46 @@
         <h1>京都極簡旅程 ⛩️</h1>
     </header>
     
-    <section class="info-card">
-        <h3>✈️ 航班/住宿</h3>
-        <p>JX834: TPE → UKB (神戶) 10:18</p>
-        <p>JX823: KIX (關西) 14:00 → TPE</p>
-        <p>住宿 1: SAKURA TERRACE THE ATELIER (11/30-12/2)</p>
-        <p>住宿 2: Wander Kyoto Nanajo (12/2-12/5)</p>
-    </section>
+    <nav class="tab-bar">
+    <button class="tab-button active" data-tab="daily">行程卡片 (6日)</button>
+    <button class="tab-button" data-tab="info">旅遊資訊</button>
+</nav>
 
+<main id="daily" class="tab-content active">
     <section class="day-card">
+        <div class="weather-widget">☀️ 預報: 晴朗, 13°C / 6°C</div>
+        <h2>Day 1: 11/30 (日) 抵達與靜謐</h2>
+        </section>
+    </main> 
+
+<section id="info" class="tab-content">
+    <h2>📌 旅遊資訊與預算</h2>
+
+    <div class="card info-card">
+        <h4>✈️ 航班資訊</h4>
+        <p>去程 JX834: TPE → UKB (神戶) 10:18</p>
+        <p>回程 JX823: KIX (關西) 14:00 → TPE</p>
+        <p class="highlight important-notice">預約代號: [A2577XX] / [B9011YY]</p>
+    </div>
+
+    <div class="card info-card">
+        <h4>🏠 住宿與聯絡</h4>
+        <p>11/30-12/2: SAKURA TERRACE THE ATELIER (九條)</p>
+        <p>12/2-12/5: Wander Kyoto Nanajo (七條)</p>
+    </div>
+
+    <div class="card info-card">
+        <h4>📞 緊急聯絡電話</h4>
+        <p>台灣駐日代表處: (06) 6120-8581</p>
+        <p>日本報警/救護: 110 / 119</p>
+    </div>
+
+    <div class="card info-card">
+        <h4>💰 記帳/預算表 (手動填寫)</h4>
+        <p>您可以在此手動紀錄或貼上您的預算連結。</p>
+        <p>交通預算: JPY 35,000 | 餐飲預算: JPY 45,000</p>
+    </div>
+</section>
         <div class="weather-widget">☀️ 預報: 晴朗, 13°C / 6°C</div>
         <h2>Day 1: 11/30 (日) 抵達與下鴨神社</h2>
         
@@ -151,3 +182,4 @@
 </body>
 
 </html>
+

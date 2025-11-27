@@ -57,6 +57,140 @@
         <section class="day-card">
             <div class="weather-widget">🌤️ 預報: 晴時多雲, 15°C / 5°C</div>
             <h2>Day 3: 12/02 (二) 哲學之道與南禪寺</h2>
-            <img src="images/day3_nanzenji.jpg
+            <img src="images/day3_nanzenji.jpg" alt="南禪寺水路閣" class="day-image">
+            <ul class="activities">
+                <li>**上午:** **南禪寺** (三門與水路閣)
+                    <button class="nav-button" onclick="navigateTo('南禪寺')">導航</button></li>
+                <li>**中午:** 沿著哲學之道散步 ➡️ 銀閣寺附近午餐</li>
+                <li>**下午:** **永觀堂** (京都紅葉之王，強烈推薦)</li>
+                <li>**晚餐:** 錦市場附近特色小吃</li>
+            </ul>
+        </section>
+        
+        <section class="day-card">
+            <div class="weather-widget">☔ 預報: 陣雨, 10°C / 4°C</div>
+            <h2>Day 4: 12/03 (三) 嵐山 (雨備)</h2>
+            <img src="images/day4_arashiyama.jpg" alt="嵐山竹林" class="day-image">
+            <ul class="activities">
+                <li>**上午:** 搭乘 JR 至嵯峨嵐山 ➡️ **竹林小徑**</li>
+                <li>**中午:** 嵐山商店街午餐</li>
+                <li>**下午:** **天龍寺** (世界遺產，曹源池庭園)
+                    <button class="nav-button" onclick="navigateTo('天龍寺')">導航</button></li>
+                <li>**傍晚:** 渡月橋欣賞河景</li>
+                <li>**晚餐:** 回京都市區，享用暖呼呼的鍋物</li>
+            </ul>
+        </section>
+
+        <section class="day-card">
+            <div class="weather-widget">☀️ 預報: 晴朗, 12°C / 5°C</div>
+            <h2>Day 5: 12/04 (四) 洛西與金閣寺</h2>
+            <img src="images/day5_kinkakuji.jpg" alt="金閣寺" class="day-image">
+            <ul class="activities">
+                <li>**上午:** **金閣寺** (舍利殿)
+                    <button class="nav-button" onclick="navigateTo('金閣寺')">導航</button></li>
+                <li>**中午:** 周邊午餐 (建議：烏龍麵)</li>
+                <li>**下午:** **龍安寺** (枯山水庭園)</li>
+                <li>**傍晚:** 回到河原町/四條通購物</li>
+                <li>**晚餐:** 享用豪華的燒肉或壽司，慶祝旅程接近尾聲</li>
+            </ul>
+        </section>
+
+        <section class="day-card">
+            <div class="weather-widget">☀️ 預報: 晴朗, 13°C / 6°C</div>
+            <h2>Day 6: 12/05 (五) 賦歸</h2>
+            <img src="images/day6_kix.jpg" alt="關西國際機場" class="day-image">
+            <ul class="activities">
+                <li>**上午:** 自由活動，在飯店附近享用早餐</li>
+                <li>**中午:** Check-out ➡️ 搭乘 Haruka 至關西機場</li>
+                <li>**下午:** 關西機場 (KIX) 購物與登機 
+                    <span class="highlight">(預計 14:00 班機)</span></li>
+            </ul>
+        </section>
+
+    </main>
+    
+    <main id="info" class="tab-content">
+        <h2>ℹ️ 旅遊重要資訊</h2>
+        
+        <div class="info-card">
+            <h3>交通概覽</h3>
+            <p>京都主要依賴巴士與地鐵。建議購買 ICOCA 或 Suica 等交通卡。一日巴士券若搭乘超過 3 趟就划算。</p>
+            <p>**重點提醒：** 往嵐山建議搭乘 JR。</p>
+        </div>
+
+        <div class="info-card">
+            <h3>楓葉預報 (12月初)</h3>
+            <p>12月初是京都賞楓的尾聲，**永觀堂、東福寺** 等地仍有機會見到見頃或滿地落葉的美景。洛西如嵐山地區可能會稍早結束。</p>
+        </div>
+
+        <div class="info-card">
+            <h3>住宿資訊</h3>
+            <p>**飯店：** Hotel Gracery Kyoto Sanjo</p>
+            <p>**地址：** 596 Higashigawa-cho, Nakagyo Ward, Kyoto, 604-8075, Japan</p>
+            <button class="nav-button" onclick="navigateTo('Hotel Gracery Kyoto Sanjo')">飯店導航</button>
+        </div>
+    </main>
+    
+    
+    <main id="account" class="tab-content">
+        <h2>💰 記帳與匯率中心</h2>
+
+        <section class="currency-converter">
+            <h3>💱 匯率換算器</h3>
+            <div class="rate-setup">
+                <label for="exchangeRate">當前匯率 (1 JPY = ? TWD)</label>
+                <input type="number" id="exchangeRate" step="0.001" value="0.22" required>
+                <button onclick="saveRate()">設定匯率並儲存</button>
+            </div>
+            
+            <div class="converter-box">
+                <input type="number" id="jpyAmount" placeholder="輸入日幣金額 (JPY)" required>
+                <p>約等於: <span id="twdResult">0.00</span> TWD</p>
+            </div>
+        </section>
+        
+        <section class="expense-tracker">
+            <h3 style="margin-top: 30px;">✍️ 新增花費紀錄 (JPY)</h3>
+            <div class="expense-form">
+                <input type="date" id="expenseDate">
+                <input type="number" id="amount" placeholder="金額 (JPY)" required>
+                <select id="category">
+                    <option value="餐飲">餐飲 🍽️</option>
+                    <option value="交通">交通 🚄</option>
+                    <option value="住宿">住宿 🏠</option>
+                    <option value="門票">門票 🎟️</option>
+                    <option value="購物">購物 🛍️</option>
+                    <option value="其他">其他...</option>
+                </select>
+                <input type="text" id="description" placeholder="備註 (如：拉麵)" required>
+                <button onclick="addExpense()">+ 新增</button>
+            </div>
+
+            <h4 style="margin-top: 30px;">🗓️ 每日花費總結 (按類別)</h4>
+            <div id="daily-summary-report" class="daily-summary-report">
+                <p style="text-align: center; color: #888;">尚無紀錄，請先新增花費。</p>
+            </div>
+        
+            <h4 style="margin-top: 30px;">🧾 所有記帳明細</h4>
+            <table class="expense-table">
+                <thead>
+                    <tr><th>日期</th><th>項目</th><th>類別</th><th>金額 (JPY)</th><th>操作</th></tr>
+                </thead>
+                <tbody id="expense-list">
+                    </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="4">總計花費:</td>
+                        <td id="total-expense">0 JPY</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <button class="clear-btn" onclick="clearExpenses()">🔥 清空所有紀錄</button>
+        </section>
+        
+    </main>
+
+    <script src="app.js"></script>
+</body>
 </html>
 

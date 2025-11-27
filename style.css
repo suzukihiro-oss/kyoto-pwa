@@ -28,7 +28,7 @@ body {
 }
 
 /* ============================================================= */
-/* 2. 分頁切換 Tab Bar 樣式 */
+/* 2. 分頁切換 Tab Bar 樣式 (針對兩個 Tab) */
 /* ============================================================= */
 .tab-bar {
     display: flex;
@@ -41,12 +41,14 @@ body {
 .tab-button {
     background-color: #E6E0D4; /* 淺灰暖色背景 */
     color: #4A4A4A;
-    padding: 8px 15px;
+    padding: 10px 20px;
     border: none;
     border-radius: 20px;
-    font-size: 14px;
+    font-size: 15px;
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
+    flex-grow: 1; /* 讓兩個按鈕平均分配寬度 */
+    max-width: 50%;
 }
 
 .tab-button.active {
@@ -83,7 +85,19 @@ body {
     padding-bottom: 10px;
     margin-top: 5px;
 }
+/* 天氣小工具 */
+.weather-widget {
+    background-color: #F8F0E7;
+    color: #A0522D;
+    font-weight: 600;
+    font-size: 13px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    display: inline-block;
+}
 
+/* 內層資訊卡片 */
 .card {
     margin-top: 15px;
     padding: 15px;
@@ -107,6 +121,7 @@ body {
     object-fit: cover; 
     border-radius: 6px; 
     display: block; 
+    /* 讓圖片稍微超出 padding，達到視覺寬度最大化 */
     margin: -10px 0 15px -10px; 
     width: calc(100% + 20px); 
 }
@@ -146,8 +161,10 @@ button:active {
 }
 
 /* ============================================================= */
-/* 4. 匯率換算器樣式 */
+/* 4. 匯率換算器樣式 (在 info-card 內) */
 /* ============================================================= */
+#converter-widget h4 { border-bottom: 1px dashed #E0D5C9; padding-bottom: 8px; }
+
 .converter-input {
     margin: 15px 0;
 }
@@ -158,7 +175,7 @@ button:active {
     font-weight: 600;
 }
 .converter-input input {
-    width: calc(100% - 22px);
+    width: 100%;
     padding: 10px;
     border: 1px solid #E0D5C9;
     border-radius: 4px;
@@ -168,6 +185,7 @@ button:active {
 }
 .converter-input button {
     width: 100%;
+    margin-top: 10px;
 }
 .converter-output {
     text-align: center;
@@ -191,8 +209,10 @@ button:active {
 
 
 /* ============================================================= */
-/* 5. 記帳表格樣式 */
+/* 5. 記帳表格樣式 (在 info-card 內) */
 /* ============================================================= */
+#accounting-widget h4 { border-bottom: 1px dashed #E0D5C9; padding-bottom: 8px; }
+
 .expense-form {
     display: flex;
     flex-wrap: wrap;
@@ -204,14 +224,19 @@ button:active {
     border: 1px solid #E0D5C9;
     border-radius: 4px;
     font-size: 14px;
-    flex: 1 1 100%;
     box-sizing: border-box;
 }
-
-.expense-form input[type="date"] { flex-basis: 45%; min-width: 120px; }
-.expense-form input[type="number"] { flex-basis: 45%; }
-.expense-form select { flex-basis: 45%; }
-.expense-form input[type="text"] { flex-basis: 45%; }
+/* 調整表單元素寬度以確保響應性 */
+.expense-form input[type="date"], 
+.expense-form input[type="number"],
+.expense-form input[type="text"],
+.expense-form select { 
+    flex-basis: calc(50% - 5px); 
+    min-width: 45%; 
+}
+.expense-form input[type="text"] {
+    flex-basis: 100%;
+}
 .expense-form button {
     background-color: #CD5C5C; /* 楓紅色按鈕 */
     color: white;

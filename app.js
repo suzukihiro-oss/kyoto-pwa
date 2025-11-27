@@ -256,4 +256,39 @@ function renderDailySummary() {
     reportDiv.innerHTML = html;
 }
 
+// =============================================================
+// 5. 楓葉特效功能 (新增)
+// =============================================================
+
+function initLeafEffect() {
+    const container = document.getElementById('leaf-container');
+    const numLeaves = 25; // 設定同時出現的葉子數量
+
+    for (let i = 0; i < numLeaves; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf';
+
+        // 隨機設定初始位置 (從畫面左邊到右邊)
+        leaf.style.left = Math.random() * 100 + 'vw';
+        
+        // 隨機設定大小 (10px 到 25px)
+        const size = Math.random() * 15 + 10; 
+        leaf.style.width = size + 'px';
+        leaf.style.height = size + 'px';
+        
+        // 隨機設定落下速度 (動畫持續時間 8s 到 18s)
+        const duration = Math.random() * 10 + 8; 
+        // 落下動畫時間, 飄動動畫時間 (讓飄動速度更快)
+        leaf.style.animationDuration = duration + 's, ' + (duration / 2) + 's';
+        
+        // 隨機設定延遲 (讓葉子不會同時開始落下，看起來更自然)
+        leaf.style.animationDelay = Math.random() * 10 + 's, ' + Math.random() * 10 + 's';
+        
+        // 隨機設定顏色 (紅棕色、深紅色、金黃色)
+        const colors = ['#A0522D', '#CD5C5C', '#DAA520'];
+        leaf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        container.appendChild(leaf);
+    }
+}
 

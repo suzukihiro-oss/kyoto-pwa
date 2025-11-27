@@ -164,4 +164,180 @@ button:active {
     border-radius: 4px;
     font-size: 16px;
     text-align: right;
+    box-sizing: border-box; /* 確保 padding 不會增加寬度 */
+}
+.converter-input button {
+    width: 100%;
+}
+.converter-output {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #B0C4DE;
+    border-radius: 6px;
+    background-color: #FDFDFD;
+}
+.result-display {
+    font-size: 24px;
+    color: #A0522D; 
+    font-weight: bold;
+}
+.separator {
+    border: 0;
+    height: 1px;
+    background-color: #eee;
+    margin: 15px 0;
+}
+
+
+/* ============================================================= */
+/* 5. 記帳表格樣式 */
+/* ============================================================= */
+.expense-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.expense-form input, .expense-form select, .expense-form button {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    flex: 1 1 100%; /* 預設佔滿一行 */
+    box-sizing: border-box;
+}
+
+/* 優化輸入欄位佈局 */
+.expense-form input[type="date"] {
+    flex-basis: 45%; 
+    min-width: 120px;
+}
+.expense-form input[type="number"] {
+    flex-basis: 45%; 
+}
+.expense-form select {
+    flex-basis: 45%;
+}
+.expense-form input[type="text"] {
+    flex-basis: 45%;
+}
+.expense-form button {
+    background-color: #5A5A5A;
+    color: white;
+    flex-basis: 100%;
+}
+
+
+/* 明細表格 */
+.expense-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+.expense-table th, .expense-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+.expense-table th {
+    background-color: #f5f5f5;
+    font-weight: bold;
+}
+.expense-table tfoot td {
+    font-weight: bold;
+    border-top: 2px solid #ccc;
+}
+.clear-btn {
+    width: 100%;
+    background-color: #C0C0C0;
+    margin-top: 15px;
+}
+
+/* 每日總結報告樣式 */
+.daily-summary-report {
+    margin-top: 15px;
+}
+.day-summary-card {
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: #fff;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+.day-summary-card h3 {
+    font-size: 16px;
+    margin-top: 0;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.summary-table {
+    width: 100%;
+    margin-top: 10px;
+    font-size: 13px;
+}
+.summary-table td {
+    padding: 5px 0;
+    border-bottom: none; 
+}
+.total-badge {
+    background-color: #A0522D; 
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+/* ============================================================= */
+/* 6. 楓葉特效樣式 */
+/* ============================================================= */
+#leaf-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* 讓特效不阻擋點擊網頁 */
+    z-index: 9999; /* 確保特效在最上層 */
+    overflow: hidden; /* 防止特效造成滾動條 */
+}
+
+.leaf {
+    position: absolute;
+    /* 簡化葉子形狀，用圓形模擬 */
+    border-radius: 50%; 
+    opacity: 0.8;
+    
+    /* 結合兩個動畫：落下 (fall) 和 飄動 (sway) */
+    animation: fall linear infinite, sway ease-in-out infinite;
+    transform: rotate(0deg);
+}
+
+/* 楓葉落下動畫 (從頂部到底部) */
+@keyframes fall {
+    0% {
+        top: -10%;
+    }
+    100% {
+        top: 110%;
+    }
+}
+
+/* 楓葉飄動動畫 (左右晃動並旋轉) */
+@keyframes sway {
+    0% {
+        transform: translateX(0) rotate(0deg);
+    }
+    50% {
+        transform: translateX(50px) rotate(180deg);
+    }
+    100% {
+        transform: translateX(0) rotate(360deg);
+    }
+}
 

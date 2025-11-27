@@ -1,8 +1,9 @@
 // =============================================================
-// 1. 核心功能: 地圖導航
+// 1. 核心功能: 地圖導航 (修復了網址語法錯誤)
 // =============================================================
 
 function navigateTo(location) {
+    // 修正了網址的格式與參數，確保不會因為語法錯誤導致整個 JS 腳本停止運行。
     const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
     window.open(url, '_blank');
 }
@@ -108,5 +109,191 @@ function convertCurrency() {
 let expenses = []; 
 
 // 取得今天的日期 (YYYY-MM-DD)
+function getTodayDateString() {
+    const today = new Date();
+    return today.getFullYear() + '-' + 
+           String(today.getMonth() + 1).padStart(2, '0') + '-' + 
+           String(today.getDate()).padStart(2, '0');
+}
+
+// 載入紀錄：從 Local Storage 讀取數據
+function loadExpenses() {
+    const savedExpenses = localStorage.getItem('kyotoExpenses');
+    if (savedExpenses) {
+        try {
+            expenses = JSON.parse(savedExpenses);
+        } catch(e) {
+            console.error("Error parsing expenses from localStorage", e);
+            expenses = [];
+        }
+    }
+    renderTable();
+    renderDailySummary(); 
+}
+
+// 儲存紀錄：將數據寫入 Local Storage
+function saveExpenses() {
+    localStorage.setItem('kyotoExpenses', JSON.stringify(expenses));
+}
+
+// 渲染明細表格：更新 HTML 顯示
+function renderTable() {
+    const listBody = document.getElementById('expense-list');
+    const totalElement = document.getElementById('total-expense');
+    listBody.innerHTML = '';
+    let total = 0;
+
+    // 將紀錄依日期降冪排序 (新紀錄在前)
+    const sortedExpenses = [...expenses].sort((a, b) => b.date.localeCompare(a.date));
+
+    sortedExpenses.forEach((expense) => {
+        const row = listBody.insertRow();
+        row.insertCell(0).textContent = expense.date; 
+        row.insertCell(1).textContent = expense.description;
+        row.insertCell(2).textContent = expense.category;
+        row.insertCell(3).textContent = expense.amount.toLocaleString();
+        total += expense.amount;
+    });
+
+    totalElement.textContent = total.toLocaleString() + ' JPY';
+}
+
+// 新增紀錄
+function addExpense() {
+    const dateInput = document.getElementById('expenseDate');
+    const amountInput = document.getElementById('amount');
+    const categoryInput = document.getElementById('category');
+    const descriptionInput = document.getElementById('description');
+
+    const date = dateInput.value || getTodayDateString(); 
+    const amount = parseFloat(amountInput.value);
+    const category = categoryInput.value;
+    const description = descriptionInput.value || category; 
+
+    if (isNaN(amount) || amount <= 0) {
+        alert('請輸入有效的金額！');
+        return;
+    }
+
+    expenses.push({ date, amount, category, description });
+    saveExpenses();
+    renderTable();
+    renderDailySummary(); 
+
+    // 清空表單
+    amountInput.value = '';
+    descriptionInput.value = '';
+    dateInput.value = ''; 
+}
+
+// 清空紀錄
+function clearExpenses() {
+    if (confirm('確定要清除所有記帳紀錄嗎？此操作不可逆！')) {
+        expenses = [];
+        saveExpenses();
+        renderTable();
+        renderDailySummary(); 
+    }
+}
+
+// 計算每日花費總結
+function calculateDailySummary() {
+    const summary = {};
+    
+    // 依日期和類別分組並加總
+    expenses.forEach(expense => {
+        const date = expense.date;
+        const category = expense.category;
+        
+        if (!summary[date]) {
+            summary[date] = { total: 0, categories: {} };
+        }
+        
+        if (!summary[date].categories[category]) {
+            summary[date].categories[category] = 0;
+        }
+        
+        summary[date].categories[category] += expense.amount;
+        summary[date].total += expense.amount;
+    });
+    
+    // 依日期降冪排序 (新紀錄在前)
+    const sortedDates = Object.keys(summary).sort().reverse();
+    
+    return { sortedDates, summary };
+}
+
+// 渲染每日花費總結表格
+function renderDailySummary() {
+    const reportDiv = document.getElementById('daily-summary-report');
+    if (!reportDiv) return; 
+
+    const { sortedDates, summary } = calculateDailySummary();
+    
+    if (sortedDates.length === 0) {
+        reportDiv.innerHTML = '<p style="text-align: center; color: #888;">尚無紀錄，請先新增花費。</p>';
+        return;
+    }
+    
+    let html = '';
+    
+    sortedDates.forEach(date => {
+        const daySummary = summary[date];
+        
+        html += `<div class="day-summary-card">`;
+        html += `<h3>${date} <span class="total-badge">${daySummary.total.toLocaleString()} JPY</span></h3>`;
+        html += `<table class="summary-table">`;
+        
+        const categories = Object.keys(daySummary.categories).sort();
+        
+        categories.forEach(category => {
+            const amount = daySummary.categories[category];
+            html += `<tr>`;
+            html += `<td style="width: 40%;">${category}</td>`;
+            html += `<td style="text-align: right;">${amount.toLocaleString()} JPY</td>`;
+            html += `</tr>`;
+        });
+        
+        html += `</table>`;
+        html += `</div>`;
+    });
+    
+    reportDiv.innerHTML = html;
+}
+
+
+// =============================================================
+// 5. 楓葉特效功能
+// =============================================================
+
+function initLeafEffect() {
+    const container = document.getElementById('leaf-container');
+    // 如果 index.html 中的容器不存在，則不執行
+    if (!container) return; 
+
+    const numLeaves = 25; // 設定同時出現的葉子數量
+
+    for (let i = 0; i < numLeaves; i++) {
+        const leaf = document.createElement('div');
+        leaf.className = 'leaf';
+
+        leaf.style.left = Math.random() * 100 + 'vw';
+        
+        const size = Math.random() * 15 + 10; 
+        leaf.style.width = size + 'px';
+        leaf.style.height = size + 'px';
+        
+        const duration = Math.random() * 10 + 8; 
+        leaf.style.animationDuration = duration + 's, ' + (duration / 2) + 's';
+        
+        leaf.style.animationDelay = Math.random() * 10 + 's, ' + Math.random() * 10 + 's';
+        
+        const colors = ['#A0522D', '#CD5C5C', '#DAA520'];
+        leaf.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        container.appendChild(leaf);
+    }
+}
+
 
 

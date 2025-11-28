@@ -1,14 +1,14 @@
 /* ============================================================= */
-/* 1. 基礎風格與日式極簡美學 (秋季暖調) */
+/* 1. 基礎風格與日式極簡美學 */
 /* ============================================================= */
 body {
     /* 核心字體：日文優先，確保中文字體也能優雅顯示 */
     font-family: 'Hiragino Sans', 'Noto Sans TC', 'Roboto', sans-serif;
-    background-color: #FBF8F1; /* 秋日柔和的大地米黃色 */
+    background-color: #F8F8F4; /* 柔和的米白色 (和紙感) */
     margin: 0 auto;
     max-width: 650px; /* 限制 App 寬度，適合手機閱讀 */
     padding: 10px; 
-    color: #4A4A4A; /* 柔和的深灰色文字 */
+    color: #2F3640; /* 柔和的深灰色文字 */
     line-height: 1.8; /* 增加行距，提高閱讀舒適度 */
     font-size: 15px;
 }
@@ -16,8 +16,7 @@ body {
 .app-header {
     text-align: center;
     padding: 15px 0;
-    /* 標題底線改為溫暖的淺棕色 */
-    border-bottom: 1px solid #D2B48C; 
+    border-bottom: 1px solid #EAEAEA;
     margin-bottom: 10px;
 }
 
@@ -25,7 +24,6 @@ body {
     font-size: 24px;
     font-weight: 500;
     margin: 0;
-    color: #A03E2F; /* 標題字使用楓葉紅 */
 }
 
 /* ============================================================= */
@@ -40,8 +38,8 @@ body {
 }
 
 .tab-button {
-    background-color: #E6E0D3; /* 淺大地色背景 */
-    color: #6B4938; /* 柔和棕色文字 */
+    background-color: #E0E0E0;
+    color: #4A4A4A;
     padding: 8px 15px;
     border: none;
     border-radius: 20px;
@@ -51,7 +49,7 @@ body {
 }
 
 .tab-button.active {
-    background-color: #A03E2F; /* 激活時使用楓葉紅 */
+    background-color: #4A4A4A; /* 深灰背景 */
     color: white;
     font-weight: bold;
 }
@@ -74,30 +72,28 @@ body {
     border-radius: 6px;
     background-color: #FFFFFF; /* 純白色卡片背景 */
     /* 增加非常輕微的陰影，模擬浮起感 */
-    box-shadow: 0 4px 8px rgba(160, 62, 47, 0.08); /* 帶有楓葉紅調的輕微陰影 */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); 
 }
 
 .day-card h2 {
-    color: #A03E2F; /* 楓葉紅標題 */
+    color: #4A4A4A;
     font-size: 20px;
-    /* 標題底部使用溫暖的虛線分隔 */
-    border-bottom: 1px dashed #D2B48C; 
+    border-bottom: 1px dashed #E0E0E0; /* 標題底部使用虛線分隔 */
     padding-bottom: 10px;
     margin-top: 5px;
 }
 
-/* 子卡片邊框色改為溫暖的棕色調 */
 .card {
     margin-top: 15px;
     padding: 15px;
-    border-left: 4px solid #B58864; /* 柔和的秋日棕色 */
-    background-color: #FFFDF9; /* 接近白色的微黃背景 */
+    border-left: 4px solid #B0C4DE; /* 藍灰色調 (靜謐感) */
+    background-color: #FDFDFD;
     border-radius: 4px;
 }
 
 .card h4 {
     font-size: 16px;
-    color: #6B4938; /* 柔和棕色標題 */
+    color: #555;
     margin-top: 0;
     margin-bottom: 8px;
     font-weight: bold;
@@ -115,9 +111,8 @@ body {
     width: calc(100% + 20px); 
 }
 
-/* 按鈕改為楓葉紅色調 */
 button {
-    background-color: #A03E2F; /* 楓葉紅 */
+    background-color: #4A4A4A; 
     color: white;
     padding: 10px 18px;
     border: none;
@@ -129,24 +124,23 @@ button {
 }
 
 button:active {
-    background-color: #C05E4F; /* 點擊時顏色變淺 */
+    background-color: #666; 
 }
 
-/* 亮顯與標籤顏色 (保持原先的紅/綠/深紅，但調整為更符合秋季的顏色) */
+/* 亮顯與標籤顏色 */
 .highlight {
     font-weight: 600; 
     color: #333;
 }
 .must-eat {
-    color: #A0522D; /* 柔和的朱紅色/棕色 (保持秋色) */
+    color: #A0522D; /* 柔和的朱紅色/棕色 (Shu-iro) */
 }
 .must-buy {
-    color: #6B8E23; /* 橄欖綠，模擬秋季的苔蘚或常綠植物 */
+    color: #3A5FCD; /* 柔和的藏青色 */
 }
 .important-notice {
     color: #8B0000; /* 深紅色警告 */
-    /* 邊界色改為暖紅色調 */
-    border-left: 3px solid #E9967A; 
+    border-left: 3px solid #F0A0A0; 
     padding-left: 5px;
     display: block;
 }
@@ -166,7 +160,7 @@ button:active {
 .converter-input input {
     width: calc(100% - 22px); /* 100% 寬度減去 padding */
     padding: 10px;
-    border: 1px solid #D2B48C; /* 邊框色使用暖棕色 */
+    border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
     text-align: right;
@@ -174,30 +168,24 @@ button:active {
 }
 .converter-input button {
     width: 100%;
-    background-color: #B58864; /* 儲存按鈕使用暖棕色 */
-}
-.converter-input button:active {
-    background-color: #D2B48C; 
 }
 .converter-output {
     text-align: center;
     margin-top: 20px;
     padding: 10px;
-    /* 輸出框邊框色改為暖棕色 */
-    border: 1px solid #B58864; 
-    background-color: #FFFDF9;
+    border: 1px solid #B0C4DE;
     border-radius: 6px;
+    background-color: #FDFDFD;
 }
 .result-display {
     font-size: 24px;
-    color: #A03E2F; /* 換算結果使用楓葉紅 */
+    color: #A0522D; 
     font-weight: bold;
 }
 .separator {
     border: 0;
     height: 1px;
-    /* 分隔線改為淺暖棕色 */
-    background-color: #E6E0D3; 
+    background-color: #eee;
     margin: 15px 0;
 }
 
@@ -213,7 +201,7 @@ button:active {
 }
 .expense-form input, .expense-form select, .expense-form button {
     padding: 8px;
-    border: 1px solid #D2B48C; /* 輸入欄位邊框使用暖棕色 */
+    border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 14px;
     flex: 1 1 100%; /* 預設佔滿一行 */
@@ -235,8 +223,7 @@ button:active {
     flex-basis: 45%;
 }
 .expense-form button {
-    /* 新增按鈕使用楓葉紅 */
-    background-color: #A03E2F;
+    background-color: #5A5A5A;
     color: white;
     flex-basis: 100%;
 }
@@ -251,22 +238,19 @@ button:active {
 .expense-table th, .expense-table td {
     padding: 8px;
     text-align: left;
-    /* 表格分隔線使用淺暖棕色 */
-    border-bottom: 1px solid #E6E0D3; 
+    border-bottom: 1px solid #eee;
 }
 .expense-table th {
-    background-color: #F0EAD6; /* 表頭使用淺暖色 */
+    background-color: #f5f5f5;
     font-weight: bold;
 }
 .expense-table tfoot td {
     font-weight: bold;
-    /* 總計上線使用深棕色 */
-    border-top: 2px solid #B58864; 
+    border-top: 2px solid #ccc;
 }
 .clear-btn {
     width: 100%;
-    /* 清空按鈕使用柔和的土黃色 */
-    background-color: #D2B48C; 
+    background-color: #C0C0C0;
     margin-top: 15px;
 }
 
@@ -275,21 +259,18 @@ button:active {
     margin-top: 15px;
 }
 .day-summary-card {
-    /* 總結卡片邊框使用柔和暖棕色 */
-    border: 1px solid #D2B48C; 
+    border: 1px solid #ddd;
     border-radius: 6px;
     padding: 15px;
     margin-bottom: 15px;
     background-color: #fff;
-    box-shadow: 0 0 5px rgba(160, 62, 47, 0.05);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
 }
 .day-summary-card h3 {
     font-size: 16px;
-    color: #6B4938; /* 棕色標題 */
     margin-top: 0;
     padding-bottom: 8px;
-    /* 分隔線使用淺暖棕色 */
-    border-bottom: 1px solid #E6E0D3; 
+    border-bottom: 1px solid #eee;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -304,45 +285,10 @@ button:active {
     border-bottom: none; 
 }
 .total-badge {
-    /* 總計標籤使用楓葉紅 */
-    background-color: #A03E2F; 
+    background-color: #A0522D; 
     color: white;
     padding: 4px 8px;
     border-radius: 4px;
     font-size: 13px;
     font-weight: bold;
 }
-
-/* ============================================================= */
-/* 6. 新增：即時天氣查詢介面樣式 */
-/* ============================================================= */
-#weather-display {
-    text-align: center;
-    padding: 15px;
-    border: 1px dashed #D2B48C; /* 暖棕色虛線邊框 */
-    border-radius: 4px;
-    margin-top: 10px;
-    background-color: #FFF8E1; /* 淺黃色背景 */
-}
-
-#weather-display h4 {
-    margin-top: 0;
-    font-size: 18px;
-    color: #6B4938; /* 棕色文字 */
-}
-
-/* 讓天氣圖標可以獨立顯示 */
-.weather-icon {
-    width: 80px; /* 增加圖標大小 */
-    height: 80px;
-    display: block;
-    margin: 0px auto 5px auto; /* 居中 */
-}
-
-/* 調整天氣按鈕與卡片內按鈕的間距 */
-#weather-display button {
-    margin-top: 15px;
-}
-
-
-

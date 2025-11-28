@@ -41,6 +41,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (jpyInput) {
         jpyInput.addEventListener('input', convertCurrency);
     }
+    
+    // 【新增】載入時，預設設定記帳日期為今天
+    setTodayDate();
 
     // 載入所有本地儲存數據
     loadExpenses();
@@ -111,6 +114,14 @@ function getTodayDateString() {
            String(today.getDate()).padStart(2, '0');
 }
 
+// 【新增】設定日期輸入框為今天日期
+function setTodayDate() {
+    const dateInput = document.getElementById('expenseDate');
+    if (dateInput) {
+        dateInput.value = getTodayDateString();
+    }
+}
+
 // 載入紀錄：從 Local Storage 讀取數據
 function loadExpenses() {
     const savedExpenses = localStorage.getItem('kyotoExpenses');
@@ -179,7 +190,8 @@ function addExpense() {
     // 清空表單
     amountInput.value = '';
     descriptionInput.value = '';
-    dateInput.value = ''; 
+    // 【修改】新增完畢後，將日期重設為今天
+    setTodayDate(); 
 }
 
 // 清空紀錄
